@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\Users\Auth\Registered;
+use App\Listeners\Users\Auth\EmailVerificationHandler;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -12,7 +14,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        // ...
+            Registered::class => [
+                    EmailVerificationHandler::class,
+            ],
     ];
 
     /**
@@ -20,7 +24,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         //
     }

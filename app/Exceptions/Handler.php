@@ -7,7 +7,6 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
@@ -17,14 +16,6 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {
-    /**
-     * A list of the exception types that are not reported.
-     *
-     * @var string[]
-     */
-    protected $dontReport = [
-        //
-    ];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
@@ -32,8 +23,8 @@ class Handler extends ExceptionHandler
      * @var string[]
      */
     protected $dontFlash = [
-        'password',
-        'password_confirmation',
+            'password',
+            'password_confirmation',
     ];
 
     /**
@@ -41,43 +32,42 @@ class Handler extends ExceptionHandler
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
+        $this->reportable(static function (Throwable $e) {
             //
         });
 
         // Render errors like JSON
-        $this->renderable(function (Throwable $e, Request $request) {
-            $status = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : null;
-            $data = ($status == 422 || $e instanceof ValidationException) ? [] : $this->convertExceptionToArray($e);
+        $this->renderable(function (Throwable $e) {
+            $status = (int)method_exists($e, 'getStatusCode') ? $e->getStatusCode() : null;
+            $data = ($status === 422 || $e instanceof ValidationException) ? [] : $this->convertExceptionToArray($e);
             $data['status'] = 'ERROR';
             $headers = $this->isHttpException($e) ? $e->getHeaders() : [];
 
-            if ($status == 401 || $e instanceof AuthenticationException) {
-                $data['message'] = 'Sorry, you are not authorized to access this data.';
+            if ($status === 401 || $e instanceof AuthenticationException) {
+                $data['message'] ??= 'Sorry, you are not authorized to access this data.';
                 $status = 401;
-            } elseif ($status == 403 || $e instanceof AuthorizationException) {
-                $data['message'] = 'Sorry, you are forbidden from accessing this data.';
+            } elseif ($status === 403 || $e instanceof AuthorizationException) {
+                $data['message'] ??= 'Sorry, you are forbidden from accessing this data.';
                 $status = 403;
-            } elseif ($status == 404 || $e instanceof NotFoundHttpException || $e instanceof ModelNotFoundException) {
-                $data['message'] = 'Sorry, the data you are looking for could not be found.';
+            } elseif ($status === 404 || $e instanceof NotFoundHttpException || $e instanceof ModelNotFoundException) {
+                $data['message'] ??= 'Sorry, the data you are looking for could not be found.';
                 $status = 404;
-            } elseif ($status == 405 || $e instanceof MethodNotAllowedException) {
-                $data['message'] = 'Sorry, the request method is not allowed.';
+            } elseif ($status === 405 || $e instanceof MethodNotAllowedException) {
+                $data['message'] ??= 'Sorry, the request method is not allowed.';
                 $status = 405;
-            } elseif ($status == 422 || $e instanceof ValidationException) {
-                $data['message'] = 'The given data was invalid.';
-                $data['errors'] = $e->validator->errors();
+            } elseif ($status === 422 || $e instanceof ValidationException) {
+                $data['message'] = $e->validator->errors();
                 $status = 422;
-            } elseif ($status == 429 || $e instanceof TooManyRequestsHttpException) {
-                $data['message'] = 'Sorry, you are making too many requests to our servers.';
+            } elseif ($status === 429 || $e instanceof TooManyRequestsHttpException) {
+                $data['message'] ??= 'Sorry, you are making too many requests to our servers.';
                 $status = 429;
-            } elseif ($status == 503 || $e instanceof ServiceUnavailableHttpException) {
-                $data['message'] = 'Sorry, we are doing some maintenance. Please check again soon.';
+            } elseif ($status === 503 || $e instanceof ServiceUnavailableHttpException) {
+                $data['message'] ??= 'Sorry, we are doing some maintenance. Please check again soon.';
                 $status = 503;
             } else {
-                $data['message'] = 'Whoops, something went wrong on our servers.';
+                $data['message'] ??= 'Whoops, something went wrong on our servers.';
                 $status = 500;
             }
 

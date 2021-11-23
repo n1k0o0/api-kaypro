@@ -1,2 +1,26 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
+Route::prefix('users')->as('users.')->group(function () {
+    Route::post('login', [\App\Http\Controllers\Users\AuthController::class, 'login']);
+    Route::post('register', [\App\Http\Controllers\Users\AuthController::class, 'register']);
+    Route::post('verify/resend', [\App\Http\Controllers\Users\AuthController::class, 'resendEmailVerify']);
+    Route::put('verify/confirm', [\App\Http\Controllers\Users\AuthController::class, 'verifyEmail']);
+    Route::post('password/recover', [\App\Http\Controllers\Users\AuthController::class, 'recoverPassword']);
+    Route::put('password/recover', [\App\Http\Controllers\Users\AuthController::class, 'updatePassword']);
+    Route::middleware(['auth:users'])->group(function () {
+        Route::post('/logout', [\App\Http\Controllers\Users\AuthController::class, 'logout']);
+        Route::get('/me', [\App\Http\Controllers\Users\AuthController::class, 'getMe']);
+    });
+});
+
+Route::prefix('moderators')->as('moderators.')->group(function () {
+    Route::post('login', [\App\Http\Controllers\Moderators\AuthController::class, 'login']);
+    Route::middleware(['auth:moderators'])->group(function () {
+        Route::post('/logout', [\App\Http\Controllers\Moderators\AuthController::class, 'logout']);
+        Route::get('/me', [\App\Http\Controllers\Moderators\AuthController::class, 'getMe']);
+        Route::resource('users', \App\Http\Controllers\Moderators\UserController::class);
+        Route::resource('moderators', \App\Http\Controllers\Moderators\ModeratorController::class);
+    });
+});
