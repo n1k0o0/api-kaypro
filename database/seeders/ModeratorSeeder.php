@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\Moderator;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class ModeratorSeeder extends Seeder
 {
@@ -21,7 +20,7 @@ class ModeratorSeeder extends Seeder
                 'last_name' => 'Moderator',
                 'phone' => '999999999999',
                 'type' => Moderator::TYPE_ADMIN,
-                'password' => Hash::make('3=%Qy2gq')
+                'password' => '3=%Qy2gq'
         ]);
     }
 }
