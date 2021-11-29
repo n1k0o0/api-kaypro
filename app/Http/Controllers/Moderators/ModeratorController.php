@@ -9,10 +9,9 @@ use App\Http\Requests\Moderators\Moderator\GetModeratorsRequest;
 use App\Http\Requests\Moderators\Moderator\UpdateModeratorRequest;
 use App\Http\Resources\Moderators\Moderator\ModeratorResource;
 use App\Models\Moderator;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ModeratorController extends Controller
 {
@@ -20,9 +19,9 @@ class ModeratorController extends Controller
      * Display a listing of the resource.
      *
      * @param  GetModeratorsRequest  $request
-     * @return LengthAwarePaginator|Collection|array
+     * @return AnonymousResourceCollection
      */
-    public function index(GetModeratorsRequest $request): LengthAwarePaginator|Collection|array
+    public function index(GetModeratorsRequest $request): AnonymousResourceCollection
     {
         $query = Moderator::query()
                 ->when(
@@ -47,9 +46,9 @@ class ModeratorController extends Controller
                 );
 
         if ($request->input('limit')) {
-            return $query->latest()->paginate($request->input('limit'));
+            return ModeratorResource::collection($query->latest()->paginate($request->input('limit')));
         }
-        return $query->get();
+        return ModeratorResource::collection($query->get());
     }
 
     /**

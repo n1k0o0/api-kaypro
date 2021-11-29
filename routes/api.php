@@ -22,5 +22,7 @@ Route::prefix('moderators')->as('moderators.')->group(function () {
         Route::get('/me', [\App\Http\Controllers\Moderators\AuthController::class, 'getMe']);
         Route::resource('users', \App\Http\Controllers\Moderators\UserController::class);
         Route::resource('moderators', \App\Http\Controllers\Moderators\ModeratorController::class);
+        Route::resource('trainings', \App\Http\Controllers\Moderators\TrainingController::class);
+        Route::resource('applications', \App\Http\Controllers\Moderators\ApplicationTrainingController::class);
     });
 });
