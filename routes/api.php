@@ -24,5 +24,6 @@ Route::prefix('moderators')->as('moderators.')->group(function () {
         Route::resource('moderators', \App\Http\Controllers\Moderators\ModeratorController::class);
         Route::resource('trainings', \App\Http\Controllers\Moderators\TrainingController::class);
         Route::resource('applications', \App\Http\Controllers\Moderators\ApplicationTrainingController::class);
+        Route::resource('news', \App\Http\Controllers\Moderators\NewsController::class);
     });
 });

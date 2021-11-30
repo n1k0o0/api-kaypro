@@ -51,16 +51,13 @@ class TrainingController extends Controller
     public function store(CreateTrainingRequest $request): JsonResponse
     {
         /* @var Training $training */
-        {
-            DB::beginTransaction();
-            $training = Training::query()->create($request->validated());
-            if (data_get($request, 'logo')) {
-                $training->addMediaFromRequest('logo')->toMediaCollection(Training::LOGO_MEDIA_COLLECTION);
-            }
-            DB::commit();
-
-            return $this->respondSuccess();
+        DB::beginTransaction();
+        $training = Training::query()->create($request->validated());
+        if (data_get($request, 'logo')) {
+            $training->addMediaFromRequest('logo')->toMediaCollection(Training::LOGO_MEDIA_COLLECTION);
         }
+        DB::commit();
+        return $this->respondSuccess();
     }
 
     /**
@@ -88,8 +85,6 @@ class TrainingController extends Controller
         $training->update($request->validated());
         if (data_get($request, 'logo')) {
             $training->addMediaFromRequest('logo')->toMediaCollection(Training::LOGO_MEDIA_COLLECTION);
-        } else {
-            $training->logo()->delete();
         }
         DB::commit();
 

@@ -18,7 +18,7 @@ class CreateTrainingsTable extends Migration
             $table->string('name', 512);
             $table->string('description', 10240);
             $table->string('location', 512);
-            $table->dateTime('date', 512);
+            $table->dateTime('date');
             $table->string('duration', 512);
             $table->string('price', 512)->nullable();
             $table->string('lecturer', 512);

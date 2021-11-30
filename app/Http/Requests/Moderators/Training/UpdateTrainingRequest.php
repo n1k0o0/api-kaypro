@@ -37,7 +37,7 @@ class UpdateTrainingRequest extends FormRequest
                 'seats' => ['required', 'integer', 'max:99999'],
                 'empty_seats' => ['required', 'integer', 'max:99999', 'lte:seats'],
                 'is_visible' => ['required', 'boolean'],
-                'logo' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+                'logo' => ['filled', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
         ];
     }
 }
