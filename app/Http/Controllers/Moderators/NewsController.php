@@ -57,7 +57,7 @@ class NewsController extends Controller
     {
         /* @var News $news */
         DB::beginTransaction();
-        $news = News::query()->create($request->safe()->merge(['moderator_id' => auth()->user()->id])->all());
+        $news = News::query()->create($request->safe()->merge(['moderator_id' => auth()->id()])->all());
 
         if (data_get($request, 'logo')) {
             $news->addMediaFromRequest('logo')->toMediaCollection(News::LOGO_MEDIA_COLLECTION);

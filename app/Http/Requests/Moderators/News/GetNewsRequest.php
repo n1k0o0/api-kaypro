@@ -4,7 +4,6 @@ namespace App\Http\Requests\Moderators\News;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use JetBrains\PhpStorm\ArrayShape;
 
 class GetNewsRequest extends FormRequest
 {
@@ -23,14 +22,7 @@ class GetNewsRequest extends FormRequest
      *
      * @return array
      */
-    #[ArrayShape([
-            'page' => "string[]",
-            'limit' => "string[]",
-            'title' => "string[]",
-            'published_at' => "string[]",
-            'sort' => "string[]",
-            'sort_type' => "array"
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
                 'page' => ['nullable', 'integer'],

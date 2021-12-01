@@ -54,6 +54,8 @@ class Training extends Model implements HasMedia
     protected $casts = [
             'id' => 'integer',
             'is_visible' => 'integer',
+            'seats' => 'integer',
+            'empty_seats' => 'integer',
     ];
 
     /**
