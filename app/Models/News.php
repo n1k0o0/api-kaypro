@@ -38,7 +38,7 @@ class News extends Model implements HasMedia
     protected $casts = [
             'id' => 'integer',
             'moderator_id' => 'integer',
-            'visibility' => 'integer',
+            'visibility' => 'boolean',
             'published_at' => 'datetime',
     ];
 

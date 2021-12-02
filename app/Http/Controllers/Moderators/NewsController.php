@@ -8,6 +8,7 @@ use App\Http\Requests\Moderators\News\GetNewsRequest;
 use App\Http\Requests\Moderators\News\UpdateNewsRequest;
 use App\Http\Resources\Moderators\News\NewsResource;
 use App\Models\News;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -55,14 +56,19 @@ class NewsController extends Controller
      */
     public function store(CreateNewsRequest $request): JsonResponse
     {
-        /* @var News $news */
-        DB::beginTransaction();
-        $news = News::query()->create($request->safe()->merge(['moderator_id' => auth()->id()])->all());
+        try {
+            /* @var News $news */
+            DB::beginTransaction();
+            $news = News::query()->create($request->safe()->merge(['moderator_id' => auth()->id()])->all());
 
-        if (data_get($request, 'logo')) {
-            $news->addMediaFromRequest('logo')->toMediaCollection(News::LOGO_MEDIA_COLLECTION);
+            if (data_get($request, 'logo_upload')) {
+                $news->addMediaFromRequest('logo_upload')->toMediaCollection(News::LOGO_MEDIA_COLLECTION);
+            }
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
         }
-        DB::commit();
         return $this->respondSuccess();
     }
 
@@ -89,15 +95,21 @@ class NewsController extends Controller
      */
     public function update(UpdateNewsRequest $request, News $news): JsonResponse
     {
-        DB::beginTransaction();
-        $data = $request->validated();
-        $news->update($data);
-        if (data_get($data, 'logo')) {
-            $news->addMediaFromRequest('logo')->toMediaCollection(News::LOGO_MEDIA_COLLECTION);
-        } elseif (array_key_exists('logo', $data)) {
-            $news->logo()->delete();
+        try {
+            DB::beginTransaction();
+            $data = $request->validated();
+            $news->update($data);
+            if (data_get($data, 'logo_upload')) {
+                $news->addMediaFromRequest('logo_upload')->toMediaCollection(News::LOGO_MEDIA_COLLECTION);
+            } elseif (array_key_exists('logo_upload', $data)) {
+                $news->logo()->delete();
+            }
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
         }
-        DB::commit();
+
 
         return $this->respondSuccess();
     }

@@ -16,6 +16,7 @@ class Training extends Model implements HasMedia
     use InteractsWithMedia;
 
     public const LOGO_MEDIA_COLLECTION = 'logo';
+    public const LECTURER_AVATAR_MEDIA_COLLECTION = 'lecturer_avatar';
 
     public const STATUS_PLANNED = 'planned',
             STATUS_CONTINUES = 'continues',
@@ -35,12 +36,16 @@ class Training extends Model implements HasMedia
     protected $fillable = [
             'name',
             'description',
+            'city',
             'location',
             'date',
             'duration',
             'price',
             'lecturer',
+            'lecturer_position',
+            'lecturer_description',
             'seats',
+            'days',
             'empty_seats',
             'status',
             'is_visible',
@@ -53,9 +58,10 @@ class Training extends Model implements HasMedia
      */
     protected $casts = [
             'id' => 'integer',
-            'is_visible' => 'integer',
+            'is_visible' => 'boolean',
             'seats' => 'integer',
             'empty_seats' => 'integer',
+            'days' => 'array',
     ];
 
     /**
@@ -87,12 +93,23 @@ class Training extends Model implements HasMedia
     }
 
     /**
+     * @return MorphOne
+     */
+    public function lecturerAvatar(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'model')->where('collection_name', self::LECTURER_AVATAR_MEDIA_COLLECTION);
+    }
+
+    /**
      * @return void
      */
     public function registerMediaCollections(): void
     {
         $this
                 ->addMediaCollection('logo')
+                ->singleFile();
+        $this
+                ->addMediaCollection('lecturer_avatar')
                 ->singleFile();
     }
 

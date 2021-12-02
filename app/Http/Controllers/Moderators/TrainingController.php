@@ -8,6 +8,7 @@ use App\Http\Requests\Moderators\Training\GetTrainingsRequest;
 use App\Http\Requests\Moderators\Training\UpdateTrainingRequest;
 use App\Http\Resources\Moderators\Training\TrainingResource;
 use App\Models\Training;
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -51,12 +52,24 @@ class TrainingController extends Controller
     public function store(CreateTrainingRequest $request): JsonResponse
     {
         /* @var Training $training */
-        DB::beginTransaction();
-        $training = Training::query()->create($request->validated());
-        if (data_get($request, 'logo')) {
-            $training->addMediaFromRequest('logo')->toMediaCollection(Training::LOGO_MEDIA_COLLECTION);
+
+        try {
+            DB::beginTransaction();
+            $training = Training::query()->create($request->validated());
+            if (data_get($request, 'logo_upload')) {
+                $training->addMediaFromRequest('logo_upload')->toMediaCollection(Training::LOGO_MEDIA_COLLECTION);
+            }
+            if (data_get($request, 'lecturer_avatar_upload')) {
+                $training->addMediaFromRequest('lecturer_avatar_upload')->toMediaCollection(
+                        Training::LECTURER_AVATAR_MEDIA_COLLECTION
+                );
+            }
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
         }
-        DB::commit();
+
         return $this->respondSuccess();
     }
 
@@ -68,7 +81,7 @@ class TrainingController extends Controller
      */
     public function show(Training $training): JsonResponse
     {
-        return $this->respondSuccess(TrainingResource::make($training->loadMissing('logo')));
+        return $this->respondSuccess(TrainingResource::make($training->loadMissing('logo', 'lecturerAvatar')));
     }
 
     /**
@@ -81,13 +94,25 @@ class TrainingController extends Controller
      */
     public function update(UpdateTrainingRequest $request, Training $training): JsonResponse
     {
-        DB::beginTransaction();
-        $training->update($request->validated());
-        if (data_get($request, 'logo')) {
-            $training->addMediaFromRequest('logo')->toMediaCollection(Training::LOGO_MEDIA_COLLECTION);
+        try {
+            DB::beginTransaction();
+            $data = $request->validated();
+            $training->update($data);
+            if (data_get($request, 'logo_upload')) {
+                $training->addMediaFromRequest('logo_upload')->toMediaCollection(Training::LOGO_MEDIA_COLLECTION);
+            }
+            if (data_get($request, 'lecturer_avatar_upload')) {
+                $training->addMediaFromRequest('lecturer_avatar_upload')->toMediaCollection(
+                        Training::LECTURER_AVATAR_MEDIA_COLLECTION
+                );
+            } elseif (array_key_exists('lecturer_avatar_upload', $data)) {
+                $training->lecturerAvatar()->delete();
+            }
+            DB::commit();
+        } catch (Exception $exception) {
+            DB::rollBack();
+            throw $exception;
         }
-        DB::commit();
-
         return $this->respondSuccess();
     }
 

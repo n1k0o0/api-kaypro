@@ -3,7 +3,6 @@
 namespace App\Http\Requests\Moderators\News;
 
 use Illuminate\Foundation\Http\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 class CreateNewsRequest extends FormRequest
 {
@@ -22,20 +21,14 @@ class CreateNewsRequest extends FormRequest
      *
      * @return array
      */
-    #[ArrayShape([
-            'title' => "string[]",
-            'published_at' => "string[]",
-            'text' => "string[]",
-            'visibility' => "string[]",
-            'logo' => "string[]"
-    ])] public function rules(): array
+    public function rules(): array
     {
         return [
                 'title' => ['required', 'max:250'],
                 'published_at' => ['required', 'date'],
                 'text' => ['required', 'string', 'max:4096'],
                 'visibility' => ['required', 'boolean'],
-                'logo' => ['required', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+                'logo_upload' => ['required', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
         ];
     }
 }
