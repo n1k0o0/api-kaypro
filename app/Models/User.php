@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Notifications\Users\Auth\PasswordRecoveryNotification;
 use App\Notifications\Users\Auth\VerifyEmail;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,8 +32,6 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property string $entity
  * @property string $entity_status
  * @property string $entity_name
- * @property string|null $ITN ИНН (Идентификационный Номер Налогоплательщика) — ITN (Individual Taxpayer Number)
- * @property string|null $PSRN ОГРН (Основной Государственный Регистрационный Номер) — PSRN (Primary State Registration Number)
  * @property string|null $entity_address
  * @property string|null $price_type
  * @property Carbon|null $created_at
@@ -45,6 +44,10 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property-read int|null $password_recoveries_count
  * @property-read Collection|PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
+ * @property string|null $itn ИНН (Идентификационный Номер Налогоплательщика) — ITN (Individual Taxpayer Number)
+ * @property string|null $psrn ОГРН (Основной Государственный Регистрационный Номер) — PSRN (Primary State Registration Number)
+ * @method static Builder|User active()
+ * @mixin Eloquent
  */
 class User extends Authenticatable
 {
@@ -181,7 +184,6 @@ class User extends Authenticatable
      */
     public function notifyByEmailVerification(EmailVerification $emailVerification): void
     {
-        logger(999);
         $this->notify(new VerifyEmail($emailVerification));
     }
 

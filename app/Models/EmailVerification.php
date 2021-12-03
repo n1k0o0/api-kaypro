@@ -2,21 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
+use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\EmailVerification
+ *
  * @property int $id
- * @property int user_id
- * @property string email
- * @property date sent_at
- * @property int verification_code
  * @property bool markAsRecovered
- * @property Collection user
+ * @property string $email
+ * @property int $user_id
+ * @property int $verification_code
+ * @property Carbon|null $sent_at
+ * @property Carbon|null $verified_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read User $user
+ * @mixin Eloquent
  */
 class EmailVerification extends Model
 {

@@ -2,14 +2,49 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Carbon;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
+/**
+ * App\Models\Training
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $description
+ * @property string $location
+ * @property string $date
+ * @property string $duration
+ * @property string $city
+ * @property string|null $price
+ * @property string $lecturer
+ * @property string|null $lecturer_description
+ * @property string $lecturer_position
+ * @property array|null $days
+ * @property int $seats
+ * @property int $empty_seats
+ * @property string $status
+ * @property bool $is_visible 0 - Invisible, 1 - Visible
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection|ApplicationTraining[] $applications
+ * @property-read int|null $applications_count
+ * @property-read Media|null $lecturerAvatar
+ * @property-read Media|null $logo
+ * @property-read MediaCollection|Media[] $media
+ * @property-read int|null $media_count
+ * @method static Builder|Training visible()
+ * @mixin Eloquent
+ */
 class Training extends Model implements HasMedia
 {
     use HasFactory;
@@ -111,6 +146,17 @@ class Training extends Model implements HasMedia
         $this
                 ->addMediaCollection('lecturer_avatar')
                 ->singleFile();
+    }
+
+    /**
+     * Scope a query to only include visible training.
+     *
+     * @param $query
+     * @return Builder
+     */
+    public function scopeVisible($query): Builder
+    {
+        return $query->where('is_visible', 1);
     }
 
 }

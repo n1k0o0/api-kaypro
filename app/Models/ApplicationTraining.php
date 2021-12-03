@@ -2,10 +2,29 @@
 
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
+/**
+ * App\Models\ApplicationTraining
+ *
+ * @property int $id
+ * @property int|null $user_id
+ * @property int $training_id
+ * @property string $user_name
+ * @property string $email
+ * @property string $phone
+ * @property string|null $message
+ * @property string $status
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Training $training
+ * @property-read User|null $user
+ * @mixin Eloquent
+ */
 class ApplicationTraining extends Model
 {
     use HasFactory;

@@ -13,6 +13,12 @@ Route::prefix('users')->as('users.')->group(function () {
         Route::post('/logout', [\App\Http\Controllers\Users\AuthController::class, 'logout']);
         Route::get('/me', [\App\Http\Controllers\Users\AuthController::class, 'getMe']);
     });
+    Route::resource('news', \App\Http\Controllers\Users\NewsController::class)->only('index', 'show');
+    Route::post(
+            'trainings/{training}/application',
+            [\App\Http\Controllers\Users\TrainingController::class, 'applyForTraining']
+    );
+    Route::resource('trainings', \App\Http\Controllers\Users\TrainingController::class)->only('index', 'show');
 });
 
 Route::prefix('moderators')->as('moderators.')->group(function () {

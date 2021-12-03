@@ -2,20 +2,26 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
+use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Carbon;
 
 
 /**
+ * App\Models\PasswordRecovery
+ *
  * @property int $id
- * @property int user_id
- * @property int verification_code
- * @property date sent_at
  * @property bool markAsRecovered
- * @property Collection user
+ * @property int $user_id
+ * @property int $verification_code
+ * @property string|null $sent_at
+ * @property string|null $recovered_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read User $user
+ * @mixin Eloquent
  */
 class PasswordRecovery extends Model
 {
