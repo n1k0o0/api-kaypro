@@ -19,6 +19,7 @@ Route::prefix('users')->as('users.')->group(function () {
         [\App\Http\Controllers\Users\TrainingController::class, 'applyForTraining']
     );
     Route::resource('trainings', \App\Http\Controllers\Users\TrainingController::class)->only('index', 'show');
+    Route::resource('pages', \App\Http\Controllers\Users\PageController::class)->only('show');
 });
 
 Route::prefix('moderators')->as('moderators.')->group(function () {
