@@ -15,8 +15,8 @@ Route::prefix('users')->as('users.')->group(function () {
     });
     Route::resource('news', \App\Http\Controllers\Users\NewsController::class)->only('index', 'show');
     Route::post(
-            'trainings/{training}/application',
-            [\App\Http\Controllers\Users\TrainingController::class, 'applyForTraining']
+        'trainings/{training}/application',
+        [\App\Http\Controllers\Users\TrainingController::class, 'applyForTraining']
     );
     Route::resource('trainings', \App\Http\Controllers\Users\TrainingController::class)->only('index', 'show');
 });
@@ -31,5 +31,6 @@ Route::prefix('moderators')->as('moderators.')->group(function () {
         Route::resource('trainings', \App\Http\Controllers\Moderators\TrainingController::class);
         Route::resource('applications', \App\Http\Controllers\Moderators\ApplicationTrainingController::class);
         Route::resource('news', \App\Http\Controllers\Moderators\NewsController::class);
+        Route::resource('pages', \App\Http\Controllers\Moderators\PageController::class);
     });
 });

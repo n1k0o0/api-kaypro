@@ -1,0 +1,98 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
+class Page extends Model implements HasMedia
+{
+    use HasFactory;
+    use InteractsWithMedia;
+
+    public const BANNER_MEDIA_COLLECTION = 'banner';
+    public const CONTENT_IMAGE_1_MEDIA_COLLECTION = 'contentImage1';
+    public const CONTENT_IMAGE_2_MEDIA_COLLECTION = 'contentImage2';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
+     */
+    protected $fillable = [
+        'content',
+        'meta_description',
+        'meta_title',
+        'meta_h1',
+        'meta_keywords',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'id' => 'integer',
+        'content' => 'array',
+    ];
+
+    /**
+     * @param $value
+     * @return void
+     * @throws \JsonException
+     */
+    public function setContentAttribute($value): void
+    {
+        $this->attributes['content'] = json_decode(
+            json_encode($value, JSON_THROW_ON_ERROR),
+            true,
+            512,
+            JSON_THROW_ON_ERROR
+        );
+    }
+
+    /**
+     * @return MorphOne
+     */
+    public function banner(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'model')->where('collection_name', self::BANNER_MEDIA_COLLECTION);
+    }
+
+    /**
+     * @return MorphOne
+     */
+    public function contentImage1(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'model')->where('collection_name', self::CONTENT_IMAGE_1_MEDIA_COLLECTION);
+    }
+
+    /**
+     * @return MorphOne
+     */
+    public function contentImage2(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'model')->where('collection_name', self::CONTENT_IMAGE_2_MEDIA_COLLECTION);
+    }
+
+    /**
+     * @return void
+     */
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('banner')
+            ->singleFile();
+        $this
+            ->addMediaCollection('contentImage1')
+            ->singleFile();
+        $this
+            ->addMediaCollection('contentImage2')
+            ->singleFile();
+    }
+}
