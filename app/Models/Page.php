@@ -18,6 +18,19 @@ class Page extends Model implements HasMedia
     public const CONTENT_IMAGE_1_MEDIA_COLLECTION = 'contentImage1';
     public const CONTENT_IMAGE_2_MEDIA_COLLECTION = 'contentImage2';
 
+    public const FEEDBACK_TYPE_SUPPORT = 'support',
+        FEEDBACK_TYPE_APPEAL = 'appeal',
+        FEEDBACK_TYPE_REQUEST = 'request';
+    public const FEEDBACK_TYPES_TEXT = [
+        self::FEEDBACK_TYPE_SUPPORT => 'Поддержка',
+        self::FEEDBACK_TYPE_APPEAL => 'Обращение',
+        self::FEEDBACK_TYPE_REQUEST => 'Запрос технологу'
+    ];
+    public const FEEDBACK_TYPES = [
+        self::FEEDBACK_TYPE_SUPPORT,
+        self::FEEDBACK_TYPE_APPEAL,
+        self::FEEDBACK_TYPE_REQUEST
+    ];
     /**
      * The attributes that are mass assignable.
      *
@@ -30,7 +43,6 @@ class Page extends Model implements HasMedia
         'meta_h1',
         'meta_keywords',
     ];
-
     /**
      * The attributes that should be cast.
      *
