@@ -34,6 +34,7 @@ use Laravel\Sanctum\PersonalAccessToken;
  * @property string $entity_name
  * @property string|null $entity_address
  * @property string|null $price_type
+ * @property bool $subscribe
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection|EmailVerification[] $emailVerifications
@@ -56,24 +57,24 @@ class User extends Authenticatable
     use Notifiable;
 
     public const STATUS_EMAIL_VERIFICATION = 'email_verification',
-            STATUS_ACTIVE = 'active',
-            STATUS_DISABLED = 'disabled',
-            STATUS_NOT_CHECKED = 'not_checked',
-            STATUS_ON_VERIFICATION = 'on_verification',
-            STATUS_VERIFIED = 'verified',
-            STATUS_REJECTED = 'rejected';
+        STATUS_ACTIVE = 'active',
+        STATUS_DISABLED = 'disabled',
+        STATUS_NOT_CHECKED = 'not_checked',
+        STATUS_ON_VERIFICATION = 'on_verification',
+        STATUS_VERIFIED = 'verified',
+        STATUS_REJECTED = 'rejected';
 
     public const STATUSES = [
-            self::STATUS_EMAIL_VERIFICATION,
-            self::STATUS_ACTIVE,
-            self::STATUS_DISABLED
+        self::STATUS_EMAIL_VERIFICATION,
+        self::STATUS_ACTIVE,
+        self::STATUS_DISABLED
     ];
 
     public const ENTITY_STATUSES = [
-            self::STATUS_NOT_CHECKED,
-            self::STATUS_ON_VERIFICATION,
-            self::STATUS_VERIFIED,
-            self::STATUS_REJECTED
+        self::STATUS_NOT_CHECKED,
+        self::STATUS_ON_VERIFICATION,
+        self::STATUS_VERIFIED,
+        self::STATUS_REJECTED
     ];
 
     /**
@@ -82,20 +83,21 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-            'email',
-            'first_name',
-            'last_name',
-            'patronymic',
-            'phone',
-            'address',
-            'password',
-            'status',
-            'entity',
-            'entity_status',
-            'entity_name',
-            'itn',
-            'psrn',
-            'entity_address',
+        'email',
+        'first_name',
+        'last_name',
+        'patronymic',
+        'phone',
+        'address',
+        'password',
+        'status',
+        'entity',
+        'entity_status',
+        'entity_name',
+        'itn',
+        'psrn',
+        'entity_address',
+        'subscribe',
     ];
 
     /**
@@ -104,8 +106,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-            'password',
-            'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -114,7 +116,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-            'entity' => 'boolean',
+        'id' => 'integer',
+        'entity' => 'boolean',
+        'subscribe' => 'boolean',
     ];
 
     /**
@@ -148,14 +152,14 @@ class User extends Authenticatable
     }
 
     /**
-     * @param  Builder  $query
+     * @param Builder $query
      * @return Builder
      */
     public function scopeActive(Builder $query): Builder
     {
         return $query->whereIn('status', [
-                self::STATUS_ACTIVE,
-                self::STATUS_EMAIL_VERIFICATION
+            self::STATUS_ACTIVE,
+            self::STATUS_EMAIL_VERIFICATION
         ]);
     }
 
