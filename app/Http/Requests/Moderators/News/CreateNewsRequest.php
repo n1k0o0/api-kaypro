@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Moderators\News;
 
+use App\Models\News;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateNewsRequest extends FormRequest
 {
@@ -24,7 +26,7 @@ class CreateNewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'max:250'],
+            'title' => ['required', 'max:250', Rule::unique(News::class, 'title')],
             'published_at' => ['required', 'date'],
             'text' => ['required', 'string', 'max:4096'],
             'visibility' => ['required', 'boolean'],
@@ -32,7 +34,6 @@ class CreateNewsRequest extends FormRequest
             'meta_title' => ['nullable', 'string', 'max:128'],
             'meta_description' => ['nullable', 'string', 'max:512'],
             'meta_keywords' => ['nullable', 'string', 'max:512'],
-            'meta_slug' => ['nullable', 'string', 'max:128'],
             'meta_image' => ['nullable', 'string', 'max:512'],
         ];
     }
