@@ -85,6 +85,11 @@ class Training extends Model implements HasMedia
         'empty_seats',
         'status',
         'is_visible',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+        'meta_slug',
+        'meta_image',
     ];
 
     /**
