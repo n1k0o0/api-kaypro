@@ -20,6 +20,11 @@ use JsonSerializable;
  * @property string duration
  * @property string lecturer_position
  * @property string lecturer_description
+ * @property string meta_title
+ * @property string meta_description
+ * @property string meta_keywords
+ * @property string meta_image
+ * @property string meta_slug
  * @property object days
  * @property int seats
  * @property int empty_seats
@@ -53,6 +58,11 @@ class TrainingResource extends JsonResource
             'empty_seats' => $this->empty_seats,
             'status' => $this->status,
             'is_visible' => (int)$this->is_visible,
+            'meta_title' => $this->meta_title,
+            'meta_description' => $this->meta_description,
+            'meta_keywords' => $this->meta_keywords,
+            'meta_image' => $this->meta_image,
+            'meta_slug' => $this->meta_slug,
             'lecturer_avatar' => ImageResource::make($this->whenLoaded('lecturerAvatar')),
             'logo' => ImageResource::make($this->whenLoaded('logo')),
         ];

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
@@ -109,7 +110,21 @@ class Training extends Model implements HasMedia
     {
         self::creating(function ($model) {
             $model->empty_seats = $model->seats;
+            $model->meta_slug = Str::slug($model->name);
         });
+        static::saving(static function ($model) {
+            $model->meta_slug = Str::slug($model->name);
+        });
+    }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'meta_slug';
     }
 
     /**

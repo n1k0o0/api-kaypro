@@ -17,7 +17,7 @@ class TrainingController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  GetTrainingsRequest  $request
+     * @param GetTrainingsRequest $request
      * @return AnonymousResourceCollection
      */
     public function index(GetTrainingsRequest $request): AnonymousResourceCollection
@@ -25,12 +25,13 @@ class TrainingController extends Controller
         /** @noinspection PhpUndefinedMethodInspection */
         /* @var Training $trainings */
         $trainings = Training::query()
-                ->visible()
-                ->with('logo', 'lecturerAvatar')
-                ->when($request->date_from, fn(Builder $q) => $q->whereDate('date', '>=', $request->date_from))
-                ->when($request->date_to, fn(Builder $q) => $q->whereDate('date', '<=', $request->date_to))
-                ->orderBy('date')
-                ->paginate(20);
+            ->visible()
+            ->with('logo')
+            ->when($request->date_from, fn(Builder $q) => $q->whereDate('date', '>=', $request->date_from))
+            ->when($request->date_to, fn(Builder $q) => $q->whereDate('date', '<=', $request->date_to))
+            ->orderBy('date')
+            ->select('id', 'name', 'meta_slug', 'date', 'price', 'lecturer', 'city', 'status')
+            ->paginate(20);
 
         return TrainingResource::collection($trainings);
     }
@@ -39,7 +40,7 @@ class TrainingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Training  $training
+     * @param Training $training
      * @return JsonResponse
      */
     public function show(Training $training): JsonResponse
@@ -48,8 +49,8 @@ class TrainingController extends Controller
     }
 
     /**
-     * @param  Training  $training
-     * @param  CreateApplicationTrainingRequest  $request
+     * @param Training $training
+     * @param CreateApplicationTrainingRequest $request
      * @return JsonResponse
      * @throws BusinessLogicException
      */

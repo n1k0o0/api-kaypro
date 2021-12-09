@@ -24,6 +24,11 @@ use JsonSerializable;
  * @property string lecturer_description
  * @property string lecturer_position
  * @property array days
+ * @property string meta_title
+ * @property string meta_description
+ * @property string meta_keywords
+ * @property string meta_image
+ * @property string meta_slug
  * @method getUrl
  **/
 class TrainingResource extends JsonResource
@@ -31,29 +36,34 @@ class TrainingResource extends JsonResource
     /**
      * Transform the resource into an array.
      *
-     * @param  Request  $request
+     * @param Request $request
      * @return array|Arrayable|JsonSerializable
      */
     public function toArray($request): array|JsonSerializable|Arrayable
     {
         return [
-                'id' => $this->id,
-                'name' => $this->name,
-                'description' => $this->description,
-                'location' => $this->location,
-                'city' => $this->city,
-                'date' => $this->date,
-                'duration' => $this->duration,
-                'price' => $this->price,
-                'seats' => $this->seats,
-                'empty_seats' => $this->empty_seats,
-                'status' => $this->status,
-                'lecturer' => $this->lecturer,
-                'lecturer_description' => $this->lecturer_description,
-                'lecturer_position' => $this->lecturer_position,
-                'days' => $this->days,
-                'lecturer_avatar' => ImageResource::make($this->whenLoaded('lecturerAvatar')),
-                'logo' => ImageResource::make($this->whenLoaded('logo'))
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'location' => $this->location,
+            'city' => $this->city,
+            'date' => $this->date,
+            'duration' => $this->duration,
+            'price' => $this->price,
+            'seats' => $this->seats,
+            'empty_seats' => $this->empty_seats,
+            'status' => $this->status,
+            'lecturer' => $this->lecturer,
+            'lecturer_description' => $this->lecturer_description,
+            'lecturer_position' => $this->lecturer_position,
+            'days' => $this->days,
+            'meta_title' => $this->meta_title,
+            'meta_description' => $this->meta_description,
+            'meta_keywords' => $this->meta_keywords,
+            'meta_image' => $this->meta_image,
+            'meta_slug' => $this->meta_slug,
+            'lecturer_avatar' => ImageResource::make($this->whenLoaded('lecturerAvatar')),
+            'logo' => ImageResource::make($this->whenLoaded('logo'))
         ];
     }
 }
