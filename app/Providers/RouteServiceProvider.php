@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\News;
-use App\Models\Training;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -41,26 +39,17 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             Route::prefix('api')
-                    ->middleware('api')
-                    ->namespace($this->namespace)
-                    ->group(base_path('routes/api.php'));
+                ->middleware('api')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/api.php'));
 
             Route::middleware('web')
-                    ->namespace($this->namespace)
-                    ->group(base_path('routes/web.php'));
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web.php'));
         });
 
         Route::pattern('news', '[\d]+');
         Route::pattern('training', '[\d]+');
-
-        Route::bind('news', function ($value) {
-            return News::where('visibility', 1)
-                    ->findOrFail($value);
-        });
-        Route::bind('training', function ($value) {
-            return Training::where('is_visible', 1)
-                    ->findOrFail($value);
-        });
     }
 
     /**

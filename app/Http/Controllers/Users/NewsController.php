@@ -15,19 +15,20 @@ class NewsController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  GetNewsRequest  $request
+     * @param GetNewsRequest $request
      * @return AnonymousResourceCollection
      */
     public function index(GetNewsRequest $request): AnonymousResourceCollection
     {
         /** @noinspection PhpUndefinedMethodInspection */
         $news = News::query()
-                ->visible()
-                ->with('logo')
-                ->when($request->date_from, fn(Builder $q) => $q->whereDate('published_at', '>=', $request->date_from))
-                ->when($request->date_to, fn(Builder $q) => $q->whereDate('published_at', '<=', $request->date_to))
-                ->orderBy('published_at')
-                ->paginate(20);
+            ->visible()
+            ->with('logo')
+            ->when($request->date_from, fn(Builder $q) => $q->whereDate('published_at', '>=', $request->date_from))
+            ->when($request->date_to, fn(Builder $q) => $q->whereDate('published_at', '<=', $request->date_to))
+            ->orderBy('published_at')
+            ->select('id', 'title', 'published_at')
+            ->paginate(20);
 
         return NewsResource::collection($news);
     }
@@ -36,7 +37,7 @@ class NewsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  News  $news
+     * @param News $news
      * @return JsonResponse
      */
     public function show(News $news): JsonResponse

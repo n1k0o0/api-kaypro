@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Moderators;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Moderators\Page\UpdatePagesRequest;
+use App\Http\Resources\Moderators\Page\PageResource;
 use App\Models\Page;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -19,7 +20,8 @@ class PageController extends Controller
      */
     public function index(): JsonResponse
     {
-        return $this->respondSuccess(Page::query()->with('banner', 'contentImage1', 'contentImage2')->get());
+        $pages = Page::query()->with('banner', 'contentImage1', 'contentImage2')->get();
+        return $this->respondSuccess(PageResource::collection($pages));
     }
 
     /**

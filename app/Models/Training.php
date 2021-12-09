@@ -54,13 +54,13 @@ class Training extends Model implements HasMedia
     public const LECTURER_AVATAR_MEDIA_COLLECTION = 'lecturer_avatar';
 
     public const STATUS_PLANNED = 'planned',
-            STATUS_CONTINUES = 'continues',
-            STATUS_COMPLETED = 'completed';
+        STATUS_CONTINUES = 'continues',
+        STATUS_COMPLETED = 'completed';
 
     public const STATUSES = [
-            self::STATUS_PLANNED,
-            self::STATUS_CONTINUES,
-            self::STATUS_COMPLETED
+        self::STATUS_PLANNED,
+        self::STATUS_CONTINUES,
+        self::STATUS_COMPLETED
     ];
 
     /**
@@ -69,21 +69,21 @@ class Training extends Model implements HasMedia
      * @var string[]
      */
     protected $fillable = [
-            'name',
-            'description',
-            'city',
-            'location',
-            'date',
-            'duration',
-            'price',
-            'lecturer',
-            'lecturer_position',
-            'lecturer_description',
-            'seats',
-            'days',
-            'empty_seats',
-            'status',
-            'is_visible',
+        'name',
+        'description',
+        'city',
+        'location',
+        'date',
+        'duration',
+        'price',
+        'lecturer',
+        'lecturer_position',
+        'lecturer_description',
+        'seats',
+        'days',
+        'empty_seats',
+        'status',
+        'is_visible',
     ];
 
     /**
@@ -92,11 +92,12 @@ class Training extends Model implements HasMedia
      * @var array
      */
     protected $casts = [
-            'id' => 'integer',
-            'is_visible' => 'boolean',
-            'seats' => 'integer',
-            'empty_seats' => 'integer',
-            'days' => 'array',
+        'id' => 'integer',
+        'is_visible' => 'boolean',
+        'seats' => 'integer',
+        'empty_seats' => 'integer',
+        'days' => 'array',
+        'date' => 'datetime',
     ];
 
     /**
@@ -109,6 +110,15 @@ class Training extends Model implements HasMedia
         self::creating(function ($model) {
             $model->empty_seats = $model->seats;
         });
+    }
+
+    /**
+     * @param $value
+     * @return string|null
+     */
+    public function getDateAttribute($value): ?string
+    {
+        return Carbon::make($value)?->toDateString();
     }
 
     /**
@@ -141,11 +151,11 @@ class Training extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-                ->addMediaCollection('logo')
-                ->singleFile();
+            ->addMediaCollection('logo')
+            ->singleFile();
         $this
-                ->addMediaCollection('lecturer_avatar')
-                ->singleFile();
+            ->addMediaCollection('lecturer_avatar')
+            ->singleFile();
     }
 
     /**

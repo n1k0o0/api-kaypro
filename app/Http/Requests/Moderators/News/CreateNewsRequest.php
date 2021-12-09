@@ -24,11 +24,16 @@ class CreateNewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-                'title' => ['required', 'max:250'],
-                'published_at' => ['required', 'date'],
-                'text' => ['required', 'string', 'max:4096'],
-                'visibility' => ['required', 'boolean'],
-                'logo_upload' => ['required', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+            'title' => ['required', 'max:250'],
+            'published_at' => ['required', 'date'],
+            'text' => ['required', 'string', 'max:4096'],
+            'visibility' => ['required', 'boolean'],
+            'logo_upload' => ['required', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+            'meta_title' => ['nullable', 'string', 'max:128'],
+            'meta_description' => ['nullable', 'string', 'max:512'],
+            'meta_keywords' => ['nullable', 'string', 'max:512'],
+            'meta_slug' => ['nullable', 'string', 'max:128'],
+            'meta_image' => ['nullable', 'string', 'max:512'],
         ];
     }
 }

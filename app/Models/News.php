@@ -44,11 +44,16 @@ class News extends Model implements HasMedia
      * @var string[]
      */
     protected $fillable = [
-            'title',
-            'text',
-            'moderator_id',
-            'published_at',
-            'visibility',
+        'title',
+        'text',
+        'moderator_id',
+        'published_at',
+        'visibility',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+        'meta_slug',
+        'meta_image',
     ];
 
     /**
@@ -57,10 +62,10 @@ class News extends Model implements HasMedia
      * @var array
      */
     protected $casts = [
-            'id' => 'integer',
-            'moderator_id' => 'integer',
-            'visibility' => 'boolean',
-            'published_at' => 'datetime',
+        'id' => 'integer',
+        'moderator_id' => 'integer',
+        'visibility' => 'boolean',
+        'published_at' => 'datetime',
     ];
 
     /**
@@ -69,7 +74,7 @@ class News extends Model implements HasMedia
      */
     public function getPublishedAtAttribute($value): ?string
     {
-        return $value;
+        return Carbon::make($value)?->toIso8601String();
     }
 
     /**
@@ -86,8 +91,8 @@ class News extends Model implements HasMedia
     public function registerMediaCollections(): void
     {
         $this
-                ->addMediaCollection('logo')
-                ->singleFile();
+            ->addMediaCollection('logo')
+            ->singleFile();
     }
 
     /**
