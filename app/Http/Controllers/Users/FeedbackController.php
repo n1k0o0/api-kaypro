@@ -20,9 +20,9 @@ class FeedbackController extends Controller
     public function __invoke(SendFeedbackRequest $request): JsonResponse
     {
         $route = match ($request->type) {
-            Page::FEEDBACK_TYPE_APPEAL => 'l.sotnikova@handsapp.ru',
-            Page::FEEDBACK_TYPE_REQUEST => 'l.sotnikova@handsapp.ru',
-            Page::FEEDBACK_TYPE_SUPPORT => 'l.sotnikova@handsapp.ru',
+            Page::FEEDBACK_TYPE_APPEAL => config('mail.feedback.appeal'),
+            Page::FEEDBACK_TYPE_REQUEST => config('mail.feedback.request'),
+            Page::FEEDBACK_TYPE_SUPPORT => config('mail.feedback.support'),
         };
         Notification::route('mail', $route)->notify(new SendFeedbackNotification($request->validated()));
         return $this->respondSuccess();

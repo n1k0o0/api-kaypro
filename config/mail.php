@@ -96,6 +96,12 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    'feedback' => [
+        'request' => env('MAIL_FEEDBACK_REQUEST', 'l.sotnikova@handsapp.ru'),
+        'appeal' => env('MAIL_FEEDBACK_APPEAL', 'l.sotnikova@handsapp.ru'),
+        'support' => env('MAIL_FEEDBACK_SUPPORT', 'l.sotnikova@handsapp.ru'),
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Markdown Mail Settings

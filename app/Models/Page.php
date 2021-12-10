@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -52,6 +54,29 @@ class Page extends Model implements HasMedia
         'id' => 'integer',
         'content' => 'array',
     ];
+
+    /**
+     * Perform any actions required after the model boots.
+     *
+     * @return void
+     */
+    public static function booted(): void
+    {
+        static::saving(static function ($model) {
+            if ($model->name === 'help' || $model->name === 'document') {
+                $cont = (array)$model->content;
+                foreach ($cont as $key => $value) {
+                    if (empty($value['title'])) {
+                        throw ValidationException::withMessages(
+                            ['title' => 'The Section title is required']
+                        );
+                    }
+                    $cont[$key]['meta_slug'] = Str::slug($value['title']);
+                }
+                $model->content = json_encode($cont, JSON_THROW_ON_ERROR);
+            }
+        });
+    }
 
     /**
      * Get the route key for the model.
