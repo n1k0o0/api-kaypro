@@ -38,6 +38,7 @@ class News extends Model implements HasMedia
     use InteractsWithMedia;
 
     public const LOGO_MEDIA_COLLECTION = 'logo';
+    public const BANNER_MEDIA_COLLECTION = 'banner';
 
     /**
      * The attributes that are mass assignable.
@@ -115,12 +116,23 @@ class News extends Model implements HasMedia
     }
 
     /**
+     * @return MorphOne
+     */
+    public function banner(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'model')->where('collection_name', self::BANNER_MEDIA_COLLECTION);
+    }
+
+    /**
      * @return void
      */
     public function registerMediaCollections(): void
     {
         $this
             ->addMediaCollection('logo')
+            ->singleFile();
+        $this
+            ->addMediaCollection('banner')
             ->singleFile();
     }
 

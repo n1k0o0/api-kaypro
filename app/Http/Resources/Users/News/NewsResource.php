@@ -39,6 +39,7 @@ class NewsResource extends JsonResource
             'meta_image' => $this->meta_image,
             'published_at' => $this->published_at,
             'logo' => ImageResource::make($this->whenLoaded('logo')),
+            'banner' => ImageResource::make($this->whenLoaded('banner')),
         ];
     }
 }

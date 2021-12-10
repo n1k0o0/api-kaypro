@@ -43,6 +43,7 @@ class NewsResource extends JsonResource
             'meta_image' => $this->meta_image,
             'published_at' => $this->published_at,
             'logo' => ImageResource::make($this->whenLoaded('logo')),
+            'banner' => ImageResource::make($this->whenLoaded('banner')),
             'moderator_id' => $this->moderator_id,
             'visibility' => (int)$this->visibility,
             'author' => ModeratorResource::make($this->whenLoaded('author')),
