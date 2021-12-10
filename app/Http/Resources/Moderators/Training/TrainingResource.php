@@ -65,6 +65,7 @@ class TrainingResource extends JsonResource
             'meta_slug' => $this->meta_slug,
             'lecturer_avatar' => ImageResource::make($this->whenLoaded('lecturerAvatar')),
             'logo' => ImageResource::make($this->whenLoaded('logo')),
+            'banner' => ImageResource::make($this->whenLoaded('banner')),
         ];
     }
 }

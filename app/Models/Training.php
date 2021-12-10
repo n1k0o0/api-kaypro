@@ -52,6 +52,7 @@ class Training extends Model implements HasMedia
     use InteractsWithMedia;
 
     public const LOGO_MEDIA_COLLECTION = 'logo';
+    public const BANNER_MEDIA_COLLECTION = 'banner';
     public const LECTURER_AVATAR_MEDIA_COLLECTION = 'lecturer_avatar';
 
     public const STATUS_PLANNED = 'planned',
@@ -160,6 +161,14 @@ class Training extends Model implements HasMedia
     /**
      * @return MorphOne
      */
+    public function banner(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'model')->where('collection_name', self::BANNER_MEDIA_COLLECTION);
+    }
+
+    /**
+     * @return MorphOne
+     */
     public function lecturerAvatar(): MorphOne
     {
         return $this->morphOne(Media::class, 'model')->where('collection_name', self::LECTURER_AVATAR_MEDIA_COLLECTION);
@@ -175,6 +184,9 @@ class Training extends Model implements HasMedia
             ->singleFile();
         $this
             ->addMediaCollection('lecturer_avatar')
+            ->singleFile();
+        $this
+            ->addMediaCollection('banner')
             ->singleFile();
     }
 

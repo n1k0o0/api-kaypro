@@ -45,7 +45,7 @@ class TrainingController extends Controller
      */
     public function show(Training $training): JsonResponse
     {
-        return $this->respondSuccess(TrainingResource::make($training->loadMissing('logo')));
+        return $this->respondSuccess(TrainingResource::make($training->loadMissing('banner', 'lecturerAvatar')));
     }
 
     /**
