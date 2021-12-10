@@ -83,7 +83,7 @@ class NewsController extends Controller
      */
     public function show(News $news): JsonResponse
     {
-        return $this->respondSuccess(NewsResource::make($news->loadMissing('banner')));
+        return $this->respondSuccess(NewsResource::make($news->loadMissing('banner', 'logo')));
     }
 
     /**
