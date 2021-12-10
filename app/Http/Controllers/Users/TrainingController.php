@@ -30,7 +30,7 @@ class TrainingController extends Controller
             ->when($request->date_from, fn(Builder $q) => $q->whereDate('date', '>=', $request->date_from))
             ->when($request->date_to, fn(Builder $q) => $q->whereDate('date', '<=', $request->date_to))
             ->orderBy('date')
-            ->select('id', 'name', 'meta_slug', 'date', 'price', 'lecturer', 'city', 'status')
+            ->select('id', 'name', 'meta_slug', 'date', 'price', 'lecturer', 'city', 'status', 'is_online')
             ->paginate(20);
 
         return TrainingResource::collection($trainings);

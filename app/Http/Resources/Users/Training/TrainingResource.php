@@ -20,6 +20,7 @@ use JsonSerializable;
  * @property string duration
  * @property int empty_seats
  * @property string status
+ * @property bool is_online
  * @property string lecturer
  * @property string lecturer_description
  * @property string lecturer_position
@@ -53,6 +54,7 @@ class TrainingResource extends JsonResource
             'seats' => $this->seats,
             'empty_seats' => $this->empty_seats,
             'status' => $this->status,
+            'is_online' => $this->is_online,
             'lecturer' => $this->lecturer,
             'lecturer_description' => $this->lecturer_description,
             'lecturer_position' => $this->lecturer_position,

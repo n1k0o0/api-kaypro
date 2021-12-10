@@ -35,6 +35,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
  * @property int $empty_seats
  * @property string $status
  * @property bool $is_visible 0 - Invisible, 1 - Visible
+ * @property bool $is_online 0 - Offline, 1 - Online
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read Collection|ApplicationTraining[] $applications
@@ -86,6 +87,7 @@ class Training extends Model implements HasMedia
         'empty_seats',
         'status',
         'is_visible',
+        'is_online',
         'meta_title',
         'meta_description',
         'meta_keywords',
@@ -102,6 +104,7 @@ class Training extends Model implements HasMedia
         'id' => 'integer',
         'price' => 'integer',
         'is_visible' => 'boolean',
+        'is_online' => 'boolean',
         'seats' => 'integer',
         'empty_seats' => 'integer',
         'days' => 'array',
