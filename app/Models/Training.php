@@ -100,6 +100,7 @@ class Training extends Model implements HasMedia
      */
     protected $casts = [
         'id' => 'integer',
+        'price' => 'integer',
         'is_visible' => 'boolean',
         'seats' => 'integer',
         'empty_seats' => 'integer',
