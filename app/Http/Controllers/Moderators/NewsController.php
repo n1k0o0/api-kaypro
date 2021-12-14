@@ -31,7 +31,7 @@ class NewsController extends Controller
         $limit = data_get($data, 'limit');
         $trainings = News::query()
             ->with('logo', 'author')
-            ->when(isset($data['name']), fn(Builder $q) => $q->where('name', 'like', '%' . $data['name'] . '%'))
+            ->when(isset($data['title']), fn(Builder $q) => $q->where('title', 'like', '%' . $data['title'] . '%'))
             ->when(
                 isset($data['published_at']),
                 fn(Builder $q) => $q->whereDate('published_at', $data['published_at'])

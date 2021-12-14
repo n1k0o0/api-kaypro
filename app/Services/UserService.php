@@ -10,33 +10,49 @@ use Illuminate\Database\Eloquent\Collection;
 class UserService
 {
     /**
-     * @param  array  $data
-     * @param  int|null  $limit
+     * @param array $data
+     * @param int|null $limit
      * @return Collection|LengthAwarePaginator|array
      */
     public function getUsers(array $data, int $limit = null): Collection|LengthAwarePaginator|array
     {
         $query = User::query()
-                ->when(
-                        isset($data['first_name']),
-                        fn(Builder $query) => $query->where('first_name', 'LIKE', '%'.$data['first_name'].'%')
-                )
-                ->when(
-                        isset($data['last_name']),
-                        fn(Builder $query) => $query->where('last_name', 'LIKE', '%'.$data['last_name'].'%')
-                )
-                ->when(
-                        isset($data['phone']),
-                        fn(Builder $query) => $query->where('phone', 'LIKE', '%'.$data['phone'].'%')
-                )
-                ->when(
-                        isset($data['email']),
-                        fn(Builder $query) => $query->where('email', 'LIKE', '%'.$data['email'].'%')
-                )
-                ->when(
-                        isset($data['sort']),
-                        fn(Builder $query) => $query->orderBy($data['sort'], $data['sort_type'])
-                );
+            ->when(
+                isset($data['first_name']),
+                fn(Builder $query) => $query->where('first_name', 'LIKE', '%' . $data['first_name'] . '%')
+            )
+            ->when(
+                isset($data['last_name']),
+                fn(Builder $query) => $query->where('last_name', 'LIKE', '%' . $data['last_name'] . '%')
+            )
+            ->when(
+                isset($data['phone']),
+                fn(Builder $query) => $query->where('phone', 'LIKE', '%' . $data['phone'] . '%')
+            )
+            ->when(
+                isset($data['email']),
+                fn(Builder $query) => $query->where('email', 'LIKE', '%' . $data['email'] . '%')
+            )
+            ->when(
+                isset($data['entity_name']),
+                fn(Builder $query) => $query->where('entity_name', 'LIKE', '%' . $data['entity_name'] . '%')
+            )
+            ->when(
+                isset($data['psrn']),
+                fn(Builder $query) => $query->where('psrn', 'LIKE', '%' . $data['psrn'] . '%')
+            )
+            ->when(
+                isset($data['itn']),
+                fn(Builder $query) => $query->where('itn', 'LIKE', '%' . $data['itn'] . '%')
+            )
+            ->when(
+                isset($data['entity_address']),
+                fn(Builder $query) => $query->where('entity_address', 'LIKE', '%' . $data['entity_address'] . '%')
+            )
+            ->when(
+                isset($data['sort']),
+                fn(Builder $query) => $query->orderBy($data['sort'], $data['sort_type'])
+            );
 
         if ($limit) {
             return $query->latest()->paginate($limit);
