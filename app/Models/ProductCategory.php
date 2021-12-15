@@ -3,10 +3,8 @@
 namespace App\Models;
 
 use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
@@ -16,23 +14,28 @@ use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
- * App\Models\News
+ * App\Models\ProductCategory
  *
  * @property int $id
  * @property string $title
- * @property string $text
- * @property string|null $published_at
- * @property int|null $moderator_id
- * @property bool $visibility 0 - Invisible, 1 - Visible
+ * @property string $subtitle
+ * @property bool $mobile_visibility
+ * @property int $order
+ * @property int|null $parent_id
+ * @property string|null $meta_title
+ * @property string|null $meta_description
+ * @property string|null $meta_keywords
+ * @property string $meta_slug
+ * @property string|null $meta_image
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Moderator|null $author
+ * @property-read Media|null $banner
  * @property-read Media|null $logo
  * @property-read MediaCollection|Media[] $media
  * @property-read int|null $media_count
  * @mixin Eloquent
  */
-class News extends Model implements HasMedia
+class ProductCategory extends Model implements HasMedia
 {
     use HasFactory;
     use InteractsWithMedia;
@@ -46,18 +49,16 @@ class News extends Model implements HasMedia
      * @var string[]
      */
     protected $fillable = [
-        'title',
-        'text',
-        'moderator_id',
-        'published_at',
-        'visibility',
+        'name',
+        'parent_id',
+        'mobile_visibility',
+        'order',
         'meta_title',
         'meta_description',
         'meta_keywords',
         'meta_slug',
         'meta_image',
     ];
-
     /**
      * The attributes that should be cast.
      *
@@ -65,9 +66,9 @@ class News extends Model implements HasMedia
      */
     protected $casts = [
         'id' => 'integer',
-        'moderator_id' => 'integer',
-        'visibility' => 'boolean',
-        'published_at' => 'datetime',
+        'parent_id' => 'integer',
+        'mobile_visibility' => 'boolean',
+        'order' => 'integer',
     ];
 
     /**
@@ -99,15 +100,6 @@ class News extends Model implements HasMedia
     }
 
     /**
-     * @param $value
-     * @return string|null
-     */
-    public function getPublishedAtAttribute($value): ?string
-    {
-        return Carbon::make($value)?->toIso8601String();
-    }
-
-    /**
      * @return MorphOne
      */
     public function logo(): MorphOne
@@ -134,24 +126,5 @@ class News extends Model implements HasMedia
         $this
             ->addMediaCollection('banner')
             ->singleFile();
-    }
-
-    /**
-     * @return BelongsTo
-     */
-    public function author(): BelongsTo
-    {
-        return $this->belongsTo(Moderator::class, 'moderator_id');
-    }
-
-    /**
-     * Scope a query to only include visible news.
-     *
-     * @param $query
-     * @return Builder
-     */
-    public function scopeVisible($query): Builder
-    {
-        return $query->where('visibility', 1);
     }
 }

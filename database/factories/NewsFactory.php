@@ -18,14 +18,14 @@ class NewsFactory extends Factory
     {
         News::all()->each->delete();
         $title = $this->faker->unique()->text(20);
-
+        $authors = Moderator::query()->pluck('id')->toArray();
         return [
             'title' => $title,
             'text' => $this->faker->text(75),
             'meta_slug' => Str::slug($title),
             'meta_title' => $title,
             'meta_description' => $this->faker->text(75),
-            'moderator_id' => $this->faker->randomElement(Moderator::query()->pluck('id')),
+            'moderator_id' => $this->faker->randomElement($authors),
             'visibility' => 1,
             'published_at' => $this->faker->dateTime,
         ];

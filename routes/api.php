@@ -34,5 +34,6 @@ Route::prefix('moderators')->as('moderators.')->group(function () {
         Route::resource('applications', \App\Http\Controllers\Moderators\ApplicationTrainingController::class);
         Route::resource('news', \App\Http\Controllers\Moderators\NewsController::class);
         Route::resource('pages', \App\Http\Controllers\Moderators\PageController::class);
+        Route::resource('product-categories', \App\Http\Controllers\Moderators\ProductCategoryController::class);
     });
 });
