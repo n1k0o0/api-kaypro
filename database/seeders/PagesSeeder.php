@@ -15,7 +15,7 @@ class PagesSeeder extends Seeder
     public function run(): void
     {
         Page::query()
-            ->insert([
+            ->insertOrIgnore([
                 [
                     'name' => 'about',
                     'content' => '{"text": "","description": ""}'
@@ -31,6 +31,10 @@ class PagesSeeder extends Seeder
                 [
                     'name' => 'document',
                     'content' => '{}'
+                ],
+                [
+                    'name' => 'cooperation',
+                    'content' => '{"description": ""}'
                 ]
             ]);
     }
