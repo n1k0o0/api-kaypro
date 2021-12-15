@@ -5,6 +5,8 @@ namespace App\Models;
 use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
@@ -126,5 +128,21 @@ class ProductCategory extends Model implements HasMedia
         $this
             ->addMediaCollection('banner')
             ->singleFile();
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(__CLASS__, 'parent_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function subcategories(): HasMany
+    {
+        return $this->hasMany(__CLASS__, 'parent_id');
     }
 }
