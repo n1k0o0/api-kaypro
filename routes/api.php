@@ -22,6 +22,7 @@ Route::prefix('users')->as('users.')->group(function () {
     Route::resource('pages', \App\Http\Controllers\Users\PageController::class)->only('show');
     Route::post('/feedback', \App\Http\Controllers\Users\FeedbackController::class);
     Route::resource('product-categories', \App\Http\Controllers\Users\ProductCategoryController::class);
+    Route::resource('products', \App\Http\Controllers\Users\ProductController::class);
 });
 
 Route::prefix('moderators')->as('moderators.')->group(function () {
@@ -36,5 +37,6 @@ Route::prefix('moderators')->as('moderators.')->group(function () {
         Route::resource('news', \App\Http\Controllers\Moderators\NewsController::class);
         Route::resource('pages', \App\Http\Controllers\Moderators\PageController::class);
         Route::resource('product-categories', \App\Http\Controllers\Moderators\ProductCategoryController::class);
+        Route::resource('products', \App\Http\Controllers\Moderators\ProductController::class);
     });
 });

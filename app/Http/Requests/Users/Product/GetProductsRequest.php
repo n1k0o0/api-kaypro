@@ -4,7 +4,10 @@ namespace App\Http\Requests\Users\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProductRequest extends FormRequest
+/**
+ * @property string name
+ */
+class GetProductsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +27,8 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'page' => ['nullable', 'integer'],
+            'name' => ['nullable', 'string', 'max:512'],
         ];
     }
 }

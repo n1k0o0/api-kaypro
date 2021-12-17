@@ -3,8 +3,9 @@
 namespace App\Http\Requests\Moderators\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class StoreProductRequest extends FormRequest
+class GetProductsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +25,11 @@ class StoreProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'page' => ['nullable', 'integer'],
+            'limit' => ['nullable', 'integer'],
+            'name' => ['nullable', 'string', 'max:512'],
+            'sort' => ['nullable', 'string', 'max:50'],
+            'sort_type' => ['nullable', 'string', Rule::in(['asc', 'desc'])],
         ];
     }
 }

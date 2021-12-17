@@ -145,4 +145,12 @@ class ProductCategory extends Model implements HasMedia
     {
         return $this->hasMany(__CLASS__, 'parent_id');
     }
+
+    /**
+     * @return HasMany
+     */
+    public function products(): HasMany
+    {
+        return $this->hasMany(Product::class, 'category', 'title');
+    }
 }

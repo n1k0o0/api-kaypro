@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Users\ProductCategory;
 
 use App\Http\Resources\Users\ImageResource;
+use App\Http\Resources\Users\Product\ProductResource;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -47,6 +48,7 @@ class ProductCategoryResource extends JsonResource
             'logo' => ImageResource::make($this->whenLoaded('logo')),
             'banner' => ImageResource::make($this->whenLoaded('banner')),
             'mobile_visibility' => $this->mobile_visibility,
+            'products' => ProductResource::collection($this->whenLoaded('products')),
         ];
     }
 }

@@ -37,14 +37,23 @@ class SendFeedbackNotification extends Notification
      */
     public function toMail(): MailMessage
     {
-        return (new MailMessage())
+        $mailMessage = new MailMessage();
+        $mailMessage
             ->subject(Page::FEEDBACK_TYPES_TEXT[$this->feedback['type']])
             ->line(Page::FEEDBACK_TYPES_TEXT[$this->feedback['type']])
             ->from(config('mail.from.address'), $this->feedback['name'])
             ->line(
                 'User: ' . $this->feedback['name'] . ' / Phone: ' . $this->feedback['phone'] . ' / Email: ' . $this->feedback['email']
-            )
-            ->line($this->feedback['comment']);
+            );
+        if (data_get($this->feedback, 'area')) {
+            $mailMessage->line('Сфера деятельности: ' . $this->feedback['area']);
+        }
+
+        if (data_get($this->feedback, 'comment')) {
+            $mailMessage->line($this->feedback['comment']);
+        }
+
+        return $mailMessage;
     }
 
     /**

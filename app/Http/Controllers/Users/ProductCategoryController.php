@@ -21,7 +21,20 @@ class ProductCategoryController extends Controller
     public function index(GetProductCategoriesRequest $request): AnonymousResourceCollection
     {
         $categories = ProductCategory::query()
-            ->with('logo')
+            ->with([
+                'logo',
+                'products' => function ($query) {
+                    $query->with('video', 'logo')->select(
+                        'id',
+                        'name',
+                        'category',
+                        'price',
+                        'short_description',
+                        'price',
+                        'meta_slug',
+                    );
+                }
+            ])
             ->when($request->title, fn(Builder $q) => $q->where('title', 'like', '%' . $request->title . '%'))
             ->orderBy('order')
             ->select('id', 'title', 'meta_slug', 'order', 'subtitle')
@@ -39,7 +52,9 @@ class ProductCategoryController extends Controller
     public function show(ProductCategory $product_category): JsonResponse
     {
         return $this->respondSuccess(
-            ProductCategoryResource::make($product_category->loadMissing('banner', 'parent', 'subcategories'))
+            ProductCategoryResource::make(
+                $product_category->loadMissing('banner', 'parent', 'subcategories', 'products.logo', 'products.video')
+            )
         );
     }
 
