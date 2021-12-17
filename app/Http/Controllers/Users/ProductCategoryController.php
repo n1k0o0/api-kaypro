@@ -58,5 +58,18 @@ class ProductCategoryController extends Controller
         );
     }
 
+    /**
+     * @return JsonResponse
+     */
+    public function getProductCategoriesForMenu(): JsonResponse
+    {
+        $categories = ProductCategory::query()
+            ->whereNull('parent_id')
+            ->with('logo')
+            ->select('id', 'title', 'meta_slug', 'order')
+            ->orderBy('order')
+            ->get();
+        return $this->respondSuccess(ProductCategoryResource::collection($categories));
+    }
 
 }

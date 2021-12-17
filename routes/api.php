@@ -22,6 +22,12 @@ Route::prefix('users')->as('users.')->group(function () {
     Route::resource('pages', \App\Http\Controllers\Users\PageController::class)->only('show');
     Route::post('/feedback', \App\Http\Controllers\Users\FeedbackController::class);
     Route::resource('product-categories', \App\Http\Controllers\Users\ProductCategoryController::class);
+    Route::get(
+        '/product-categories-menu',
+        [\App\Http\Controllers\Users\ProductCategoryController::class, 'getProductCategoriesForMenu']
+    )->name(
+        'getProductCategoriesForMenu'
+    );
     Route::resource('products', \App\Http\Controllers\Users\ProductController::class);
 });
 
