@@ -23,6 +23,7 @@ class FeedbackController extends Controller
             Page::FEEDBACK_TYPE_APPEAL => config('mail.feedback.appeal'),
             Page::FEEDBACK_TYPE_REQUEST => config('mail.feedback.request'),
             Page::FEEDBACK_TYPE_SUPPORT => config('mail.feedback.support'),
+            Page::FEEDBACK_TYPE_COOPERATION => config('mail.feedback.cooperation'),
         };
         Notification::route('mail', $route)->notify(new SendFeedbackNotification($request->validated()));
         return $this->respondSuccess();

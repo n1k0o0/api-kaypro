@@ -22,16 +22,19 @@ class Page extends Model implements HasMedia
 
     public const FEEDBACK_TYPE_SUPPORT = 'support',
         FEEDBACK_TYPE_APPEAL = 'appeal',
-        FEEDBACK_TYPE_REQUEST = 'request';
+        FEEDBACK_TYPE_REQUEST = 'request',
+        FEEDBACK_TYPE_COOPERATION = 'cooperation';
     public const FEEDBACK_TYPES_TEXT = [
         self::FEEDBACK_TYPE_SUPPORT => 'Поддержка',
         self::FEEDBACK_TYPE_APPEAL => 'Обращение',
-        self::FEEDBACK_TYPE_REQUEST => 'Запрос технологу'
+        self::FEEDBACK_TYPE_REQUEST => 'Запрос технологу',
+        self::FEEDBACK_TYPE_COOPERATION => 'Сотрудничество'
     ];
     public const FEEDBACK_TYPES = [
         self::FEEDBACK_TYPE_SUPPORT,
         self::FEEDBACK_TYPE_APPEAL,
-        self::FEEDBACK_TYPE_REQUEST
+        self::FEEDBACK_TYPE_REQUEST,
+        self::FEEDBACK_TYPE_COOPERATION
     ];
     /**
      * The attributes that are mass assignable.

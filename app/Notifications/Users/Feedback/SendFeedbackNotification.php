@@ -43,14 +43,19 @@ class SendFeedbackNotification extends Notification
             ->line(Page::FEEDBACK_TYPES_TEXT[$this->feedback['type']])
             ->from(config('mail.from.address'), $this->feedback['name'])
             ->line(
-                'User: ' . $this->feedback['name'] . ' / Phone: ' . $this->feedback['phone'] . ' / Email: ' . $this->feedback['email']
-            );
+                'Пользователь: ' . $this->feedback['name']
+            )
+            ->line('Phone: ' . $this->feedback['phone'])
+            ->line('Email: ' . $this->feedback['email']);
+        if (data_get($this->feedback, 'city')) {
+            $mailMessage->line('Город : ' . $this->feedback['city']);
+        }
         if (data_get($this->feedback, 'area')) {
             $mailMessage->line('Сфера деятельности: ' . $this->feedback['area']);
         }
 
         if (data_get($this->feedback, 'comment')) {
-            $mailMessage->line($this->feedback['comment']);
+            $mailMessage->line('Комментарий : ' . $this->feedback['comment']);
         }
 
         return $mailMessage;

@@ -36,6 +36,7 @@ class SendFeedbackRequest extends FormRequest
             'email' => ['required', 'string', 'max:128'],
             'comment' => ['nullable', 'string', 'max:1024'],
             'area' => ['nullable', 'string', 'max:512'],
+            'city' => ['nullable', 'string', 'max:512'],
             'agreement' => ['required', 'accepted'],
             'type' => ['required', 'string', Rule::in(Page::FEEDBACK_TYPES)],
         ];
