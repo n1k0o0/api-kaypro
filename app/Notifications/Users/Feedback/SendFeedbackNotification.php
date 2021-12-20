@@ -39,6 +39,8 @@ class SendFeedbackNotification extends Notification
     {
         $mailMessage = new MailMessage();
         $mailMessage
+            ->greeting('Привет!')
+            ->salutation("С уважением " . config('app.name'))
             ->subject(Page::FEEDBACK_TYPES_TEXT[$this->feedback['type']])
             ->line(Page::FEEDBACK_TYPES_TEXT[$this->feedback['type']])
             ->from(config('mail.from.address'), $this->feedback['name'])
