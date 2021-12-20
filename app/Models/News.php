@@ -75,10 +75,8 @@ class News extends Model implements HasMedia
      *
      * @return void
      */
-    protected static function boot(): void
+    protected static function booted(): void
     {
-        parent::boot();
-
         static::creating(static function ($model) {
             $model->meta_slug = Str::slug($model->title);
         });

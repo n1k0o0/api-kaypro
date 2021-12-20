@@ -61,6 +61,7 @@ class Product extends Model implements HasMedia
         'id' => 'integer',
         'count' => 'integer',
         'barcode' => 'integer',
+        'weight' => 'double',
     ];
 
     /**

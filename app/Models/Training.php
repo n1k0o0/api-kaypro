@@ -118,7 +118,7 @@ class Training extends Model implements HasMedia
      */
     public static function booted(): void
     {
-        self::creating(function ($model) {
+        self::creating(static function ($model) {
             $model->empty_seats = $model->seats;
             $model->meta_slug = Str::slug($model->name);
         });

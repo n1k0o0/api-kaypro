@@ -68,8 +68,9 @@ class ProductController extends Controller
     {
         try {
             DB::beginTransaction();
-            $product->update($request->validated());
             $data = $request->validated();
+            $product->update($data);
+
             if (data_get($data, 'logo_upload')) {
                 $product->addMediaFromRequest('logo_upload')->toMediaCollection(
                     Product::LOGO_MEDIA_COLLECTION

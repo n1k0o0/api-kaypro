@@ -53,7 +53,7 @@ class ProductResource extends JsonResource
             'count' => $this->count,
             'unit' => $this->unit,
             'name' => $this->name,
-            'category' => $this->unit,
+            'category' => $this->category,
             'volume' => $this->volume,
             'weight' => $this->weight,
             'status' => $this->status,
