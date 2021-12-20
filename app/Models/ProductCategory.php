@@ -54,6 +54,7 @@ class ProductCategory extends Model implements HasMedia
         'name',
         'parent_id',
         'mobile_visibility',
+        'subtitle',
         'order',
         'meta_title',
         'meta_description',

@@ -26,6 +26,7 @@ class TrainingController extends Controller
         /* @var Training $trainings */
         $trainings = Training::query()
             ->visible()
+            ->active()
             ->with('logo')
             ->when($request->date_from, fn(Builder $q) => $q->whereDate('date', '>=', $request->date_from))
             ->when($request->date_to, fn(Builder $q) => $q->whereDate('date', '<=', $request->date_to))
@@ -62,6 +63,9 @@ class TrainingController extends Controller
                 throw new BusinessLogicException('Вы уже записались на данное обучение');
             }
             $data['user_id'] = auth('users')->id();
+        }
+        if (!$training->notStarted()) {
+            throw new BusinessLogicException('Вы можете записаться только на не начатое обучение');
         }
         $training->applications()->create($data);
         return $this->respondSuccess();

@@ -29,7 +29,7 @@ class ProductCategoryController extends Controller
                         'name',
                         'category',
                         'price',
-                        'short_description',
+                        'characteristic',
                         'price',
                         'meta_slug',
                     );

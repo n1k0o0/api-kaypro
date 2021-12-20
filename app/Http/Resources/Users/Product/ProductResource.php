@@ -29,11 +29,12 @@ use JsonSerializable;
  * @property string category,
  * @property string volume
  * @property string weight
- * @property string short_description
+ * @property string characteristic
  * @property string full_description
  * @property string composition
  * @property string country,
  * @property string status,
+ * @property string dimension,
  **/
 class ProductResource extends JsonResource
 {
@@ -56,8 +57,9 @@ class ProductResource extends JsonResource
             'category' => $this->category,
             'volume' => $this->volume,
             'weight' => $this->weight,
+            'dimension' => $this->dimension,
             'status' => $this->status,
-            'short_description' => $this->short_description,
+            'characteristic' => $this->characteristic,
             'full_description' => $this->full_description,
             'composition' => $this->composition,
             'country' => $this->country,

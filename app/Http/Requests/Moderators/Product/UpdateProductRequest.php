@@ -24,7 +24,19 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'characteristic' => ['nullable', 'string', 'max:512'],
+            'full_description' => ['nullable', 'string', 'max:2048'],
+            'composition' => ['nullable', 'string', 'max:2048'],
+            'volume' => ['nullable', 'string', 'max:256'],
+            'dimension' => ['nullable', 'string', 'max:128'],
+            'country' => ['nullable', 'string', 'max:256'],
+            'status' => ['filled', 'boolean'],
+            'logo_upload' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+            'video_upload' => ['nullable', 'mimes:mp4,flv,webm,avi', 'max:20480'],
+            'meta_title' => ['nullable', 'string', 'max:128'],
+            'meta_description' => ['nullable', 'string', 'max:512'],
+            'meta_keywords' => ['nullable', 'string', 'max:512'],
+            'meta_image' => ['nullable', 'string', 'max:512'],
         ];
     }
 }

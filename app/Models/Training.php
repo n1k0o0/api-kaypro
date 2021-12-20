@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Types\Boolean;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection;
@@ -203,6 +204,25 @@ class Training extends Model implements HasMedia
     public function scopeVisible($query): Builder
     {
         return $query->where('is_visible', 1);
+    }
+
+    /**
+     * Scope a query to only include visible training.
+     *
+     * @param $query
+     * @return Builder
+     */
+    public function scopeActive($query): Builder
+    {
+        return $query->where('status', '<>', self::STATUS_COMPLETED);
+    }
+
+    /**
+     * @return bool
+     */
+    public function notStarted(): boolean
+    {
+        return $this->status === self::STATUS_PLANNED;
     }
 
 }

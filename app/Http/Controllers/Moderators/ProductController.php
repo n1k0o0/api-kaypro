@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Moderators;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Moderators\Product\GetProductsRequest;
-use App\Http\Requests\Moderators\ProductCategory\UpdateProductCategoryRequest;
+use App\Http\Requests\Moderators\Product\UpdateProductRequest;
 use App\Http\Resources\Moderators\Product\ProductResource;
 use App\Models\Product;
 use Exception;
@@ -57,14 +57,14 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateProductCategoryRequest $request
+     * @param UpdateProductRequest $request
      * @param Product $product
      * @return JsonResponse
      * @throws FileDoesNotExist
      * @throws FileIsTooBig
      * @throws Throwable
      */
-    public function update(UpdateProductCategoryRequest $request, Product $product): JsonResponse
+    public function update(UpdateProductRequest $request, Product $product): JsonResponse
     {
         try {
             DB::beginTransaction();

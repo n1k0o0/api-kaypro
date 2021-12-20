@@ -40,7 +40,8 @@ class Product extends Model implements HasMedia
         'category',
         'volume',
         'weight',
-        'short_description',
+        'dimension',
+        'characteristic',
         'full_description',
         'composition',
         'country',
@@ -62,6 +63,7 @@ class Product extends Model implements HasMedia
         'count' => 'integer',
         'barcode' => 'integer',
         'weight' => 'double',
+        'status' => 'boolean',
     ];
 
     /**
