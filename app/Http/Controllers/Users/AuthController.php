@@ -11,7 +11,6 @@ use App\Http\Requests\Users\Auth\RegisterRequest;
 use App\Http\Requests\Users\Auth\ResendVerifyEmailRequest;
 use App\Http\Requests\Users\Auth\UpdatePasswordRequest;
 use App\Http\Requests\Users\Auth\VerifyEmailRequest;
-use App\Http\Resources\Users\User\UserResource;
 use App\Models\EmailVerification;
 use App\Models\PasswordRecovery;
 use App\Models\User;
@@ -26,7 +25,7 @@ class AuthController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  RegisterRequest  $request
+     * @param RegisterRequest $request
      * @return JsonResponse
      */
     public function register(RegisterRequest $request): JsonResponse
@@ -50,12 +49,12 @@ class AuthController extends Controller
         }
         $user->emailVerifications()->whereNull('verified_at')->delete();
         $emailVerification = $user->emailVerifications()->create(
-                [
-                        'user_id' => $user->id,
-                        'email' => $user->email,
-                        'verified_at' => null,
-                        'verification_code' => create4DigitCodeForEmailVerify()
-                ]
+            [
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'verified_at' => null,
+                'verification_code' => create4DigitCodeForEmailVerify()
+            ]
         );
         $user->notifyByEmailVerification($emailVerification);
         $emailVerification->sent_at = now();
@@ -70,11 +69,11 @@ class AuthController extends Controller
     {
         /** @var EmailVerification $verification */
         $verification = EmailVerification::query()
-                ->where('email', $request->input('email'))
-                ->whereNotNull('sent_at')
-                ->whereNull('verified_at')
-                ->orderBy('sent_at', 'desc')
-                ->firstOrFail();
+            ->where('email', $request->input('email'))
+            ->whereNotNull('sent_at')
+            ->whereNull('verified_at')
+            ->orderBy('sent_at', 'desc')
+            ->firstOrFail();
 
         if (!$verification || $verification->verification_code !== (int)$request->input('code')) {
             throw new BusinessLogicException('Неправильный код');
@@ -82,7 +81,6 @@ class AuthController extends Controller
 
         $verification->markAsVerified();
 
-        /** @var User $user */
         $user = $verification->user;
 
         if ($user->email !== $verification->email) {
@@ -101,7 +99,7 @@ class AuthController extends Controller
     }
 
     /**
-     * @param  RecoverPasswordRequest  $request
+     * @param RecoverPasswordRequest $request
      *
      * @return JsonResponse
      * @throws Exception
@@ -116,8 +114,8 @@ class AuthController extends Controller
             DB::beginTransaction();
             $user->passwordRecoveries()->whereNull('recovered_at')->delete();
             $passwordRecovery = $user->passwordRecoveries()->create([
-                    'user_id' => $user->id,
-                    'verification_code' => create4DigitCodeForPasswordRecovery(),
+                'user_id' => $user->id,
+                'verification_code' => create4DigitCodeForPasswordRecovery(),
             ]);
 
             $user->notifyByPasswordRecovery($passwordRecovery);
@@ -133,7 +131,7 @@ class AuthController extends Controller
     }
 
     /**
-     * @param  UpdatePasswordRequest  $request
+     * @param UpdatePasswordRequest $request
      *
      * @return JsonResponse
      */
@@ -142,11 +140,11 @@ class AuthController extends Controller
         /** @var PasswordRecovery $recovery */
         /** @var User $user */
         $recovery = PasswordRecovery::query()
-                ->where('verification_code', $request->input('code'))
-                ->whereNotNull('sent_at')
-                ->whereNull('recovered_at')
-                ->orderBy('sent_at', 'desc')
-                ->firstOrFail();
+            ->where('verification_code', $request->input('code'))
+            ->whereNotNull('sent_at')
+            ->whereNull('recovered_at')
+            ->orderBy('sent_at', 'desc')
+            ->firstOrFail();
 
         $recovery->markAsRecovered();
 
@@ -173,15 +171,6 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @return JsonResponse
-     */
-    public function getMe(): JsonResponse
-    {
-        return $this->respondSuccess(UserResource::make(auth()->user()));
-    }
 
     /**
      * @return JsonResponse

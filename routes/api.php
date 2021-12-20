@@ -11,7 +11,12 @@ Route::prefix('users')->as('users.')->group(function () {
     Route::put('password/recover', [\App\Http\Controllers\Users\AuthController::class, 'updatePassword']);
     Route::middleware(['auth:users'])->group(function () {
         Route::post('/logout', [\App\Http\Controllers\Users\AuthController::class, 'logout']);
-        Route::get('/me', [\App\Http\Controllers\Users\AuthController::class, 'getMe']);
+        Route::prefix('profile')->as('profile.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Users\ProfileController::class, 'getProfile']);
+            Route::put('/', [\App\Http\Controllers\Users\ProfileController::class, 'updateProfile']);
+            Route::post('change-password', [\App\Http\Controllers\Users\ProfileController::class, 'changePassword']
+            )->name('changePassword');
+        });
     });
     Route::resource('news', \App\Http\Controllers\Users\NewsController::class)->only('index', 'show');
     Route::post(
