@@ -65,7 +65,7 @@ class ProductCategoryController extends Controller
     {
         $categories = ProductCategory::query()
             ->whereNull('parent_id')
-            ->with('logo')
+            ->with('logo', 'subcategories')
             ->select('id', 'title', 'meta_slug', 'order')
             ->orderBy('order')
             ->get();
