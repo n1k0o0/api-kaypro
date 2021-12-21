@@ -55,8 +55,11 @@ class ProductCategoryController extends Controller
             ProductCategoryResource::make(
                 $product_category->loadMissing(
                     'banner',
+                    'logo',
                     'parent.banner',
+                    'parent.logo',
                     'subcategories.banner',
+                    'subcategories.logo',
                     'products.logo',
                     'products.video'
                 )
