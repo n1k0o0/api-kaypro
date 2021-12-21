@@ -53,7 +53,13 @@ class ProductCategoryController extends Controller
     {
         return $this->respondSuccess(
             ProductCategoryResource::make(
-                $product_category->loadMissing('banner', 'parent', 'subcategories', 'products.logo', 'products.video')
+                $product_category->loadMissing(
+                    'banner',
+                    'parent.banner',
+                    'subcategories.banner',
+                    'products.logo',
+                    'products.video'
+                )
             )
         );
     }
@@ -65,7 +71,7 @@ class ProductCategoryController extends Controller
     {
         $categories = ProductCategory::query()
             ->whereNull('parent_id')
-            ->with('logo', 'subcategories')
+            ->with('logo', 'subcategories.logo')
             ->select('id', 'title', 'meta_slug', 'order')
             ->orderBy('order')
             ->get();
