@@ -8,6 +8,8 @@ use Illuminate\Support\Carbon;
 /**
  * @property Carbon|null $date_from
  * @property Carbon|null $date_to
+ * @property int limit
+ * @property int page
  **/
 class GetNewsRequest extends FormRequest
 {
@@ -30,8 +32,10 @@ class GetNewsRequest extends FormRequest
     public function rules(): array
     {
         return [
-                'date_from' => ['nullable', 'date'],
-                'date_to' => ['nullable', 'date', 'after_or_equal:date_from'],
+            'date_from' => ['nullable', 'date'],
+            'date_to' => ['nullable', 'date', 'after_or_equal:date_from'],
+            'limit' => ['nullable', 'integer'],
+            'page' => ['nullable', 'integer'],
         ];
     }
 }

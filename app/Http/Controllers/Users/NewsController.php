@@ -28,7 +28,7 @@ class NewsController extends Controller
             ->when($request->date_to, fn(Builder $q) => $q->whereDate('published_at', '<=', $request->date_to))
             ->orderBy('published_at')
             ->select('id', 'title', 'meta_slug', 'published_at')
-            ->paginate(20);
+            ->paginate(data_get($request, 'limit', 20));
 
         return NewsResource::collection($news);
     }
