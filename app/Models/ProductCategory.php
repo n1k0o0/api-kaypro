@@ -150,7 +150,7 @@ class ProductCategory extends Model implements HasMedia
      */
     public function infinityNestedSubcategories(): HasMany
     {
-        return $this->subcategories()->with('infinityNestedSubcategories');
+        return $this->subcategories()->with(['infinityNestedSubcategories', 'infinityNestedParent']);
     }
 
     /**
