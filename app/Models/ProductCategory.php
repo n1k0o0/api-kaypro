@@ -51,7 +51,7 @@ class ProductCategory extends Model implements HasMedia
      * @var string[]
      */
     protected $fillable = [
-        'name',
+        'title',
         'parent_id',
         'mobile_visibility',
         'subtitle',
@@ -132,9 +132,25 @@ class ProductCategory extends Model implements HasMedia
     /**
      * @return BelongsTo
      */
+    public function infinityNestedParent(): BelongsTo
+    {
+        return $this->parent()->with('infinityNestedParent');
+    }
+
+    /**
+     * @return BelongsTo
+     */
     public function parent(): BelongsTo
     {
         return $this->belongsTo(__CLASS__, 'parent_id');
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function infinityNestedSubcategories(): HasMany
+    {
+        return $this->subcategories()->with('infinityNestedSubcategories');
     }
 
     /**

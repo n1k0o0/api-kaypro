@@ -8,6 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use JsonSerializable;
 
 /**
+ * @property int id
  * @property string first_name
  * @property string last_name
  * @property string patronymic
@@ -35,6 +36,7 @@ class UserResource extends JsonResource
     public function toArray($request): array|JsonSerializable|Arrayable
     {
         return [
+            'id' => $this->id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'patronymic' => $this->patronymic,

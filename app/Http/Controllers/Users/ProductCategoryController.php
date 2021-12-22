@@ -56,10 +56,10 @@ class ProductCategoryController extends Controller
                 $product_category->loadMissing(
                     'banner',
                     'logo',
-                    'parent.banner',
-                    'parent.logo',
-                    'subcategories.banner',
-                    'subcategories.logo',
+                    'infinityNestedParent.banner',
+                    'infinityNestedParent.logo',
+                    'infinityNestedSubcategories.banner',
+                    'infinityNestedSubcategories.logo',
                     'products.logo',
                     'products.video'
                 )
@@ -74,7 +74,7 @@ class ProductCategoryController extends Controller
     {
         $categories = ProductCategory::query()
             ->whereNull('parent_id')
-            ->with('logo', 'subcategories.logo')
+            ->with('logo', 'infinityNestedSubcategories.logo')
             ->select('id', 'title', 'meta_slug', 'order')
             ->orderBy('order')
             ->get();
