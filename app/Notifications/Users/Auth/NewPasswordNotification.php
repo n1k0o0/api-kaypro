@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PasswordRecoveryNotification extends Notification
+class NewPasswordNotification extends Notification
 {
     use Queueable;
 
@@ -16,9 +16,8 @@ class PasswordRecoveryNotification extends Notification
      *
      * @return void
      */
-    public function __construct(private PasswordRecovery $passwordRecovery)
+    public function __construct(private PasswordRecovery $passwordRecovery, private string $password)
     {
-        //
     }
 
     /**
@@ -42,11 +41,7 @@ class PasswordRecoveryNotification extends Notification
             ->subject('KayPro - восстановление пароля')
             ->greeting('Уважаемый(ая) ' . $this->passwordRecovery->user->first_name)
             ->line(
-                'Для восстановления пароля перейдите по ссылке: '
-            )
-            ->action(
-                'Получить новый пароль',
-                route('users.updatePassword', $this->passwordRecovery->verification_code)
+                'Ваш новый пароль : ' . $this->password
             )
             ->salutation('С уважением, команда KayPro');
     }

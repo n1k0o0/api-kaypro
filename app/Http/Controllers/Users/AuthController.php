@@ -9,15 +9,17 @@ use App\Http\Requests\Users\Auth\LoginRequest;
 use App\Http\Requests\Users\Auth\RecoverPasswordRequest;
 use App\Http\Requests\Users\Auth\RegisterRequest;
 use App\Http\Requests\Users\Auth\ResendVerifyEmailRequest;
-use App\Http\Requests\Users\Auth\UpdatePasswordRequest;
 use App\Http\Requests\Users\Auth\VerifyEmailRequest;
 use App\Models\EmailVerification;
 use App\Models\PasswordRecovery;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 use Throwable;
 
 class AuthController extends Controller
@@ -115,7 +117,7 @@ class AuthController extends Controller
             $user->passwordRecoveries()->whereNull('recovered_at')->delete();
             $passwordRecovery = $user->passwordRecoveries()->create([
                 'user_id' => $user->id,
-                'verification_code' => create4DigitCodeForPasswordRecovery(),
+                'verification_code' => Str::uuid(),
             ]);
 
             $user->notifyByPasswordRecovery($passwordRecovery);
@@ -131,27 +133,40 @@ class AuthController extends Controller
     }
 
     /**
-     * @param UpdatePasswordRequest $request
-     *
-     * @return JsonResponse
+     * @param $token
+     * @return RedirectResponse
+     * @throws Throwable
      */
-    public function updatePassword(UpdatePasswordRequest $request): JsonResponse
+    public function updatePassword($token): RedirectResponse
     {
-        /** @var PasswordRecovery $recovery */
-        /** @var User $user */
-        $recovery = PasswordRecovery::query()
-            ->where('verification_code', $request->input('code'))
-            ->whereNotNull('sent_at')
-            ->whereNull('recovered_at')
-            ->orderBy('sent_at', 'desc')
-            ->firstOrFail();
+        try {
+            DB::beginTransaction();
+            /** @var PasswordRecovery $recovery */
+            /** @var User $user */
+            $recovery = PasswordRecovery::query()
+                ->where('verification_code', $token)
+                ->whereNotNull('sent_at')
+                ->whereNull('recovered_at')
+                ->orderBy('sent_at', 'desc')
+                ->first();
 
-        $recovery->markAsRecovered();
+            if (!$recovery || !$recovery->user) {
+                return Redirect::to(config('app.front_url') . '/login?message=Ссылка недействительна!');
+            }
 
-        $user = $recovery->user;
-        $user->update(['password' => $request->input('new_password')]);
-        $user->tokens()->delete();
-        return $this->respondSuccess();
+            $recovery->markAsRecovered();
+
+            $user = $recovery->user;
+            $newPassword = Str::random(8);
+            $user->update(['password' => $newPassword]);
+            $user->notifyNewPassword($recovery, $newPassword);
+            $user->tokens()->delete();
+            DB::commit();
+            return Redirect::to(config('app.front_url') . '/login?message=Новый пароль отправлен на вашу почту.');
+        } catch (Exception) {
+            DB::rollBack();
+            return Redirect::to(config('app.front_url') . '/login?error');
+        }
     }
 
     /**

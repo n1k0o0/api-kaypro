@@ -3,12 +3,18 @@
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('users')->as('users.')->group(function () {
-    Route::post('login', [\App\Http\Controllers\Users\AuthController::class, 'login']);
-    Route::post('register', [\App\Http\Controllers\Users\AuthController::class, 'register']);
-    Route::post('verify/resend', [\App\Http\Controllers\Users\AuthController::class, 'resendEmailVerify']);
-    Route::put('verify/confirm', [\App\Http\Controllers\Users\AuthController::class, 'verifyEmail']);
-    Route::post('password/recover', [\App\Http\Controllers\Users\AuthController::class, 'recoverPassword']);
-    Route::put('password/recover', [\App\Http\Controllers\Users\AuthController::class, 'updatePassword']);
+    Route::post('login', [\App\Http\Controllers\Users\AuthController::class, 'login'])->name('login');
+    Route::post('register', [\App\Http\Controllers\Users\AuthController::class, 'register'])->name('register');
+    Route::post('verify/resend', [\App\Http\Controllers\Users\AuthController::class, 'resendEmailVerify'])->name(
+        'resendEmailVerify'
+    );
+    Route::put('verify/confirm', [\App\Http\Controllers\Users\AuthController::class, 'verifyEmail'])->name(
+        'verifyEmail'
+    );
+    Route::post('password/recover', [\App\Http\Controllers\Users\AuthController::class, 'recoverPassword']
+    )->name(
+        'recoverPassword'
+    );
     Route::middleware(['auth:users'])->group(function () {
         Route::post('/logout', [\App\Http\Controllers\Users\AuthController::class, 'logout']);
         Route::prefix('profile')->as('profile.')->group(function () {

@@ -33,8 +33,8 @@ class PasswordRecovery extends Model
      * @var array
      */
     protected $fillable = [
-            'user_id',
-            'verification_code'
+        'user_id',
+        'verification_code'
     ];
 
     /**
@@ -43,8 +43,7 @@ class PasswordRecovery extends Model
      * @var array
      */
     protected $casts = [
-            'user_id' => 'integer',
-            'verification_code' => 'integer'
+        'user_id' => 'integer',
     ];
 
     /**
@@ -65,7 +64,7 @@ class PasswordRecovery extends Model
     public function markAsRecovered(): bool
     {
         return $this->forceFill([
-                'recovered_at' => $this->freshTimestamp(),
+            'recovered_at' => $this->freshTimestamp(),
         ])->save();
     }
 }

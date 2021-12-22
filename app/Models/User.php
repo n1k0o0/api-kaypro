@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\Users\Auth\NewPasswordNotification;
 use App\Notifications\Users\Auth\PasswordRecoveryNotification;
 use App\Notifications\Users\Auth\VerifyEmail;
 use Eloquent;
@@ -197,6 +198,14 @@ class User extends Authenticatable
     public function notifyByPasswordRecovery(PasswordRecovery $passwordRecovery): void
     {
         $this->notify(new PasswordRecoveryNotification($passwordRecovery));
+    }
+
+    /**
+     * Send password recovery notification
+     */
+    public function notifyNewPassword(PasswordRecovery $passwordRecovery, string $password): void
+    {
+        $this->notify(new NewPasswordNotification($passwordRecovery, $password));
     }
 
     /**
