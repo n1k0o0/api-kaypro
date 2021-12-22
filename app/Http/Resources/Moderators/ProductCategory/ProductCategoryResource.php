@@ -42,6 +42,9 @@ class ProductCategoryResource extends JsonResource
             'meta_image' => $this->meta_image,
             'logo' => ImageResource::make($this->whenLoaded('logo')),
             'banner' => ImageResource::make($this->whenLoaded('banner')),
+            'banner_menu' => ImageResource::make($this->whenLoaded('bannerMenu')),
+            'banner_mobile' => ImageResource::make($this->whenLoaded('bannerMobile')),
+            'parent' => self::make($this->whenLoaded('parent')),
             'mobile_visibility' => (int)$this->mobile_visibility,
         ];
     }

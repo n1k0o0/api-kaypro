@@ -29,6 +29,8 @@ class UpdateProductCategoryRequest extends FormRequest
             'mobile_visibility' => ['nullable', 'boolean'],
             'logo_upload' => ['filled', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
             'banner_upload' => ['filled', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+            'banner_menu_upload' => ['filled', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+            'banner_mobile_upload' => ['filled', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
             'meta_title' => ['nullable', 'string', 'max:128'],
             'meta_description' => ['nullable', 'string', 'max:512'],
             'meta_keywords' => ['nullable', 'string', 'max:512'],

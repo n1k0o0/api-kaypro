@@ -55,6 +55,8 @@ class ProductCategoryController extends Controller
             ProductCategoryResource::make(
                 $product_category->loadMissing(
                     'banner',
+                    'bannerMenu',
+                    'bannerMobile',
                     'logo',
                     'infinityNestedParent.banner',
                     'infinityNestedParent.logo',

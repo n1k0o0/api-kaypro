@@ -60,7 +60,11 @@ class ProductCategoryController extends Controller
      */
     public function show(ProductCategory $productCategory): JsonResponse
     {
-        return $this->respondSuccess(ProductCategoryResource::make($productCategory->loadMissing('banner')));
+        return $this->respondSuccess(
+            ProductCategoryResource::make(
+                $productCategory->loadMissing('banner', 'parent', 'bannerMenu', 'bannerMobile')
+            )
+        );
     }
 
     /**
@@ -91,6 +95,20 @@ class ProductCategoryController extends Controller
                     ProductCategory::BANNER_MEDIA_COLLECTION
                 );
             } elseif (array_key_exists('banner_upload', $data)) {
+                $product_category->banner()->delete();
+            }
+            if (data_get($request, 'banner_menu_upload')) {
+                $product_category->addMediaFromRequest('banner_menu_upload')->toMediaCollection(
+                    ProductCategory::BANNER_MENU_MEDIA_COLLECTION
+                );
+            } elseif (array_key_exists('banner_menu_upload', $data)) {
+                $product_category->banner()->delete();
+            }
+            if (data_get($request, 'banner_mobile_upload')) {
+                $product_category->addMediaFromRequest('banner_mobile_upload')->toMediaCollection(
+                    ProductCategory::BANNER_MOBILE_MEDIA_COLLECTION
+                );
+            } elseif (array_key_exists('banner_mobile_upload', $data)) {
                 $product_category->banner()->delete();
             }
             DB::commit();

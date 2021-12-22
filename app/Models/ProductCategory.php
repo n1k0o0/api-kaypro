@@ -44,6 +44,8 @@ class ProductCategory extends Model implements HasMedia
 
     public const LOGO_MEDIA_COLLECTION = 'logo';
     public const BANNER_MEDIA_COLLECTION = 'banner';
+    public const BANNER_MENU_MEDIA_COLLECTION = 'menu';
+    public const BANNER_MOBILE_MEDIA_COLLECTION = 'mobile';
 
     /**
      * The attributes that are mass assignable.
@@ -117,6 +119,22 @@ class ProductCategory extends Model implements HasMedia
     }
 
     /**
+     * @return MorphOne
+     */
+    public function bannerMenu(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'model')->where('collection_name', self::BANNER_MENU_MEDIA_COLLECTION);
+    }
+
+    /**
+     * @return MorphOne
+     */
+    public function bannerMobile(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'model')->where('collection_name', self::BANNER_MOBILE_MEDIA_COLLECTION);
+    }
+
+    /**
      * @return void
      */
     public function registerMediaCollections(): void
@@ -127,6 +145,12 @@ class ProductCategory extends Model implements HasMedia
         $this
             ->addMediaCollection('banner')
             ->singleFile();
+        $this
+            ->addMediaCollection('menu')
+            ->singleFile();
+        $this
+            ->addMediaCollection('mobile')
+            ->singleFile();
     }
 
     /**
@@ -134,7 +158,7 @@ class ProductCategory extends Model implements HasMedia
      */
     public function infinityNestedParent(): BelongsTo
     {
-        return $this->parent()->with('infinityNestedParent');
+        return $this->parent()->with('infinityNestedParent', 'banner', 'bannerMobile', 'bannerMenu', 'logo');
     }
 
     /**
@@ -150,7 +174,9 @@ class ProductCategory extends Model implements HasMedia
      */
     public function infinityNestedSubcategories(): HasMany
     {
-        return $this->subcategories()->with(['infinityNestedSubcategories', 'infinityNestedParent']);
+        return $this->subcategories()->with(
+            ['infinityNestedSubcategories', 'infinityNestedParent', 'banner', 'bannerMobile', 'bannerMenu', 'logo']
+        );
     }
 
     /**
