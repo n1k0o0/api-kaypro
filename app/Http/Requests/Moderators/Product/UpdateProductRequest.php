@@ -4,6 +4,10 @@ namespace App\Http\Requests\Moderators\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+
+/**
+ * @property string deleted_files
+ */
 class UpdateProductRequest extends FormRequest
 {
     /**
@@ -31,12 +35,24 @@ class UpdateProductRequest extends FormRequest
             'dimension' => ['nullable', 'string', 'max:128'],
             'country' => ['nullable', 'string', 'max:256'],
             'status' => ['filled', 'boolean'],
-            'logo_upload' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+            'deleted_files' => ['array', 'nullable'],
+            'logo_upload' => ['array', 'nullable'],
+            'logo_upload.*' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
             'video_upload' => ['nullable', 'mimes:mp4,flv,webm,avi', 'max:20480'],
             'meta_title' => ['nullable', 'string', 'max:128'],
             'meta_description' => ['nullable', 'string', 'max:512'],
             'meta_keywords' => ['nullable', 'string', 'max:512'],
             'meta_image' => ['nullable', 'string', 'max:512'],
         ];
+    }
+
+    /**
+     * @throws \JsonException
+     */
+    public function prepareForValidation(): void
+    {
+        $this->merge([
+            'deleted_files' => explode(',', $this->deleted_files)
+        ]);
     }
 }

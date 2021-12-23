@@ -70,7 +70,7 @@ class ProductResource extends JsonResource
             'meta_keywords' => $this->meta_keywords,
             'meta_slug' => $this->meta_slug,
             'meta_image' => $this->meta_image,
-            'logo' => ImageResource::make($this->whenLoaded('logo')),
+            'logo' => ImageResource::collection($this->whenLoaded('logo')),
             'video' => ImageResource::make($this->whenLoaded('video')),
         ];
     }

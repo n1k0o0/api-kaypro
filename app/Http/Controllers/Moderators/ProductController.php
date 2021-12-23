@@ -70,14 +70,15 @@ class ProductController extends Controller
             DB::beginTransaction();
             $data = $request->validated();
             $product->update($data);
-
             if (data_get($data, 'logo_upload')) {
-                $product->addMediaFromRequest('logo_upload')->toMediaCollection(
-                    Product::LOGO_MEDIA_COLLECTION
-                );
-            } elseif (array_key_exists('logo_upload', $data)) {
-                $product->logo()->delete();
+                foreach ($data['logo_upload'] as $file) {
+                    $product->addMedia($file)->toMediaCollection('logo');
+                }
             }
+            if (data_get($data, 'deleted_files')) {
+                $product->logo()->whereIn('id', $data['deleted_files'])?->delete();
+            }
+
             if (data_get($data, 'video_upload')) {
                 $product->addMediaFromRequest('video_upload')->toMediaCollection(
                     Product::VIDEO_MEDIA_COLLECTION

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -77,11 +78,11 @@ class Product extends Model implements HasMedia
     }
 
     /**
-     * @return MorphOne
+     * @return MorphMany
      */
-    public function logo(): MorphOne
+    public function logo(): MorphMany
     {
-        return $this->morphOne(Media::class, 'model')->where('collection_name', self::LOGO_MEDIA_COLLECTION);
+        return $this->morphMany(Media::class, 'model')->where('collection_name', self::LOGO_MEDIA_COLLECTION);
     }
 
     /**
@@ -97,9 +98,6 @@ class Product extends Model implements HasMedia
      */
     public function registerMediaCollections(): void
     {
-        $this
-            ->addMediaCollection('logo')
-            ->singleFile();
         $this
             ->addMediaCollection('video')
             ->singleFile();

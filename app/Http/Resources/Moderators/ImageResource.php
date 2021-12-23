@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
+ * @property int id
  * @property string file_name
  * @property string mime_type
  * @property string name
@@ -22,7 +23,7 @@ class ImageResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id' => $this->file_name,
+            'id' => $this->id,
             'mime_type' => $this->mime_type,
             'file_name' => $this->file_name,
             'name' => $this->name,
