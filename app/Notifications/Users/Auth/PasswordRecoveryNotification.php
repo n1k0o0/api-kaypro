@@ -46,7 +46,7 @@ class PasswordRecoveryNotification extends Notification
             )
             ->action(
                 'Получить новый пароль',
-                route('users.updatePassword', $this->passwordRecovery->verification_code)
+                config('app.front_url') . '/login/' . $this->passwordRecovery->verification_code
             )
             ->salutation('С уважением, команда KayPro');
     }

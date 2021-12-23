@@ -15,10 +15,8 @@ use App\Models\PasswordRecovery;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Throwable;
 
@@ -134,10 +132,10 @@ class AuthController extends Controller
 
     /**
      * @param $token
-     * @return RedirectResponse
+     * @return JsonResponse
      * @throws Throwable
      */
-    public function updatePassword($token): RedirectResponse
+    public function updatePassword($token): JsonResponse
     {
         try {
             DB::beginTransaction();
@@ -151,7 +149,7 @@ class AuthController extends Controller
                 ->first();
 
             if (!$recovery || !$recovery->user) {
-                return Redirect::to(config('app.front_url') . '/login?message=Ссылка недействительна!');
+                return $this->respondUnprocessableEntity('Ссылка недействительна!');
             }
 
             $recovery->markAsRecovered();
@@ -162,10 +160,11 @@ class AuthController extends Controller
             $user->notifyNewPassword($recovery, $newPassword);
             $user->tokens()->delete();
             DB::commit();
-            return Redirect::to(config('app.front_url') . '/login?message=Новый пароль отправлен на вашу почту.');
+
+            return $this->respondSuccess('Новый пароль отправлен на вашу почту.');
         } catch (Exception) {
             DB::rollBack();
-            return Redirect::to(config('app.front_url') . '/login?error');
+            return $this->respondError('Упс! Что-то пошло не так');
         }
     }
 

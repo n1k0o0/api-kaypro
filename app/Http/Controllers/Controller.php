@@ -17,7 +17,7 @@ class Controller extends BaseController
 
     /**
      *
-     * @param  mixed  $data
+     * @param mixed $data
      * @return JsonResponse
      */
     public function respondCreated(mixed $data = []): JsonResponse
@@ -27,7 +27,7 @@ class Controller extends BaseController
 
     /**
      *
-     * @param  mixed  $data
+     * @param mixed $data
      * @return JsonResponse
      */
     public function respondAccepted(mixed $data = []): JsonResponse
@@ -36,7 +36,7 @@ class Controller extends BaseController
     }
 
     /**
-     * @param  mixed|null  $data
+     * @param mixed|null $data
      *
      * @return JsonResponse
      */
@@ -46,7 +46,7 @@ class Controller extends BaseController
     }
 
     /**
-     * @param  mixed|null  $data
+     * @param mixed|null $data
      *
      * @return JsonResponse
      */
@@ -63,20 +63,30 @@ class Controller extends BaseController
     protected function respondWithToken($token): JsonResponse
     {
         return $this->respondSuccess([
-                'access_token' => $token,
-                'token_type' => 'bearer',
+            'access_token' => $token,
+            'token_type' => 'bearer',
 //            'expires_in' => auth('internal-users')->factory()->getTTL() * 60
         ]);
     }
 
     /**
      *
-     * @param  mixed  $data
+     * @param mixed $data
      * @return JsonResponse
      */
     public function respondSuccess(mixed $data = []): JsonResponse
     {
         return response()->json($data, Response::HTTP_OK);
+    }
+
+    /**
+     *
+     * @param mixed $data
+     * @return JsonResponse
+     */
+    public function respondError(mixed $data = []): JsonResponse
+    {
+        return response()->json($data, Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
 }

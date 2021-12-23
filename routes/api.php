@@ -15,6 +15,9 @@ Route::prefix('users')->as('users.')->group(function () {
     )->name(
         'recoverPassword'
     );
+    Route::get('password/recover/{token}', [\App\Http\Controllers\Users\AuthController::class, 'updatePassword'])->name(
+        'updatePassword'
+    );
     Route::middleware(['auth:users'])->group(function () {
         Route::post('/logout', [\App\Http\Controllers\Users\AuthController::class, 'logout']);
         Route::prefix('profile')->as('profile.')->group(function () {
