@@ -7,6 +7,7 @@ use App\Http\Requests\Users\Product\GetProductsRequest;
 use App\Http\Resources\Users\Product\ProductResource;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ProductController extends Controller
@@ -32,11 +33,11 @@ class ProductController extends Controller
      * Display the specified resource.
      *
      * @param Product $product
-     * @return void
+     * @return JsonResponse
      */
-    public function show(Product $product): void
+    public function show(Product $product): JsonResponse
     {
-        //
+        return $this->respondSuccess(ProductResource::make($product->loadMissing('logo', 'video')));
     }
 
 }
