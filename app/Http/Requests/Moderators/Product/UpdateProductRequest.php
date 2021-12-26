@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 
 /**
- * @property string deleted_files
+ * @property array deleted_files
  */
 class UpdateProductRequest extends FormRequest
 {
@@ -44,15 +44,5 @@ class UpdateProductRequest extends FormRequest
             'meta_keywords' => ['nullable', 'string', 'max:512'],
             'meta_image' => ['nullable', 'string', 'max:512'],
         ];
-    }
-
-    /**
-     * @throws \JsonException
-     */
-    public function prepareForValidation(): void
-    {
-        $this->merge([
-            'deleted_files' => explode(',', $this->deleted_files)
-        ]);
     }
 }
