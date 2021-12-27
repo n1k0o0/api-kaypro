@@ -34,7 +34,7 @@ class UpdatePagesRequest extends FormRequest
             'contentImage1' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
             'contentImage2' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
             'lineImage' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
-            'lineMedia' => ['nullable', 'mimes:jpg,png,jpeg,svg,mp4', 'max:5120'],
+            'lineMedia' => ['nullable', 'mimes:jpg,png,jpeg,svg,mp4,flv,webm,avi', 'max:5120'],
             'deleted_files' => ['array', 'nullable'],
         ];
     }

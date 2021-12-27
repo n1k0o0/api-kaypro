@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
@@ -46,6 +47,7 @@ class ProductCategory extends Model implements HasMedia
     public const BANNER_MEDIA_COLLECTION = 'banner';
     public const BANNER_MENU_MEDIA_COLLECTION = 'menu';
     public const BANNER_MOBILE_MEDIA_COLLECTION = 'mobile';
+    public const SLIDER_MEDIA_COLLECTION = 'slider';
 
     /**
      * The attributes that are mass assignable.
@@ -132,6 +134,14 @@ class ProductCategory extends Model implements HasMedia
     public function bannerMobile(): MorphOne
     {
         return $this->morphOne(Media::class, 'model')->where('collection_name', self::BANNER_MOBILE_MEDIA_COLLECTION);
+    }
+
+    /**
+     * @return MorphMany
+     */
+    public function slider(): MorphMany
+    {
+        return $this->MorphMany(Media::class, 'model')->where('collection_name', self::SLIDER_MEDIA_COLLECTION);
     }
 
     /**

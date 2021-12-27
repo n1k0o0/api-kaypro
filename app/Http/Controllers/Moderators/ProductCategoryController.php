@@ -29,7 +29,7 @@ class ProductCategoryController extends Controller
         $data = $request->validated();
         $limit = data_get($data, 'limit');
         $categories = ProductCategory::query()
-            ->with('logo')
+            ->with('logo', 'parent')
             ->when(isset($data['title']), fn(Builder $q) => $q->where('title', 'like', '%' . $data['title'] . '%'))
             ->when(
                 isset($data['sort']),
@@ -62,7 +62,7 @@ class ProductCategoryController extends Controller
     {
         return $this->respondSuccess(
             ProductCategoryResource::make(
-                $productCategory->loadMissing('banner', 'parent', 'bannerMenu', 'bannerMobile')
+                $productCategory->loadMissing('banner', 'parent', 'bannerMenu', 'bannerMobile', 'slider', 'logo')
             )
         );
     }
@@ -110,6 +110,14 @@ class ProductCategoryController extends Controller
                 );
             } elseif (array_key_exists('banner_mobile_upload', $data)) {
                 $product_category->banner()->delete();
+            }
+            if (data_get($data, 'slider_upload')) {
+                foreach ($data['slider_upload'] as $file) {
+                    $product_category->addMedia($file)->toMediaCollection(ProductCategory::SLIDER_MEDIA_COLLECTION);
+                }
+            }
+            if (data_get($data, 'deleted_files')) {
+                $product_category->slider()->whereIn('id', $data['deleted_files'])?->delete();
             }
             DB::commit();
         } catch (Exception $exception) {

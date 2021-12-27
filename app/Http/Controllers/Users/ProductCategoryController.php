@@ -23,6 +23,10 @@ class ProductCategoryController extends Controller
         $categories = ProductCategory::query()
             ->with([
                 'logo',
+                'slider',
+                'banner',
+                'bannerMenu',
+                'bannerMobile',
                 'products' => function ($query) {
                     $query->with('video', 'logo')->select(
                         'id',
@@ -58,6 +62,10 @@ class ProductCategoryController extends Controller
                     'bannerMenu',
                     'bannerMobile',
                     'logo',
+                    'banner',
+                    'bannerMenu',
+                    'bannerMobile',
+                    'slider',
                     'infinityNestedParent.banner',
                     'infinityNestedParent.logo',
                     'infinityNestedSubcategories.banner',
@@ -76,7 +84,15 @@ class ProductCategoryController extends Controller
     {
         $categories = ProductCategory::query()
             ->whereNull('parent_id')
-            ->with('logo', 'infinityNestedSubcategories.logo', 'bannerMenu')
+            ->with(
+                'logo',
+                'infinityNestedSubcategories.logo',
+                'bannerMenu',
+                'slider',
+                'bannerMenu',
+                'bannerMobile',
+                'banner'
+            )
             ->select('id', 'title', 'meta_slug', 'order')
             ->orderBy('order')
             ->get();
