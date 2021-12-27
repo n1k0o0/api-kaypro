@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Moderators\Page;
 
 use App\Http\Resources\Moderators\ImageResource;
+use App\Http\Resources\Moderators\Slider\SliderResource;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -19,6 +20,9 @@ use JsonSerializable;
  * @property object banner
  * @property object contentImage1
  * @property object contentImage2
+ * @property object lineMedia
+ * @property object lineImage
+ * @property object instagram
  **/
 class PageResource extends JsonResource
 {
@@ -31,6 +35,7 @@ class PageResource extends JsonResource
     public function toArray($request): array|JsonSerializable|Arrayable
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'meta_h1' => $this->meta_h1,
             'meta_title' => $this->meta_title,
@@ -40,6 +45,10 @@ class PageResource extends JsonResource
             'banner' => $this->when((bool)$this->banner, ImageResource::make($this->banner)),
             'content_image1' => $this->when((bool)$this->contentImage1, ImageResource::make($this->contentImage1)),
             'content_image2' => $this->when((bool)$this->contentImage2, ImageResource::make($this->contentImage2)),
+            'line_image' => $this->when((bool)$this->lineImage, ImageResource::make($this->lineImage)),
+            'line_media' => $this->when((bool)$this->lineMedia, ImageResource::make($this->lineMedia)),
+            'slider' => SliderResource::collection($this->whenLoaded('sliders')),
+            'instagram' => ImageResource::collection($this->whenLoaded('instagram')),
         ];
     }
 }

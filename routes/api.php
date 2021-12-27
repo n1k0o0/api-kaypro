@@ -58,5 +58,10 @@ Route::prefix('moderators')->as('moderators.')->group(function () {
         Route::resource('pages', \App\Http\Controllers\Moderators\PageController::class);
         Route::resource('product-categories', \App\Http\Controllers\Moderators\ProductCategoryController::class);
         Route::resource('products', \App\Http\Controllers\Moderators\ProductController::class);
+        Route::post('sliders/update-orders', [\App\Http\Controllers\Moderators\SliderController::class, 'updateOrder']
+        )->name(
+            'updateOrder'
+        );
+        Route::resource('sliders', \App\Http\Controllers\Moderators\SliderController::class);
     });
 });

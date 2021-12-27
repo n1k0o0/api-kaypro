@@ -76,7 +76,7 @@ class ProductCategoryController extends Controller
     {
         $categories = ProductCategory::query()
             ->whereNull('parent_id')
-            ->with('logo', 'infinityNestedSubcategories.logo')
+            ->with('logo', 'infinityNestedSubcategories.logo', 'bannerMenu')
             ->select('id', 'title', 'meta_slug', 'order')
             ->orderBy('order')
             ->get();

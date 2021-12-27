@@ -29,7 +29,17 @@ class PageController extends Controller
     public function show(Page $page): JsonResponse
     {
         return $this->respondSuccess(
-            PageResource::make($page->loadMissing('banner', 'contentImage1', 'contentImage2'))
+            PageResource::make(
+                $page->loadMissing(
+                    'banner',
+                    'contentImage1',
+                    'contentImage2',
+                    'lineMedia',
+                    'lineImage',
+                    'instagram',
+                    'sliders'
+                )
+            )
         );
     }
 

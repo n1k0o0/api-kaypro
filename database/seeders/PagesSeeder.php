@@ -35,6 +35,10 @@ class PagesSeeder extends Seeder
                 [
                     'name' => 'cooperation',
                     'content' => '{"description": ""}'
+                ],
+                [
+                    'name' => 'home',
+                    'content' => '{"new_products":[],"bestsellers":[],"line":{"title":""},"product":{},"popular":[],"line_2":[{"title":""},{"title":""}],"instagram":[]}'
                 ]
             ]);
     }

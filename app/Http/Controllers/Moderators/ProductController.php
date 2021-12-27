@@ -29,6 +29,7 @@ class ProductController extends Controller
         $data = $request->validated();
         $limit = data_get($data, 'limit');
         $products = Product::query()
+            ->with('logo')
             ->when(isset($data['name']), fn(Builder $q) => $q->where('name', 'like', '%' . $data['name'] . '%'))
             ->when(
                 isset($data['sort']),

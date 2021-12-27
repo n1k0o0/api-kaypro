@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -19,6 +20,9 @@ class Page extends Model implements HasMedia
     public const BANNER_MEDIA_COLLECTION = 'banner';
     public const CONTENT_IMAGE_1_MEDIA_COLLECTION = 'contentImage1';
     public const CONTENT_IMAGE_2_MEDIA_COLLECTION = 'contentImage2';
+    public const LINE_IMAGE_MEDIA_COLLECTION = 'lineImage';
+    public const LINE_MEDIA_MEDIA_COLLECTION = 'lineMedia';
+    public const INSTAGRAM_MEDIA_COLLECTION = 'instagram';
 
     public const FEEDBACK_TYPE_SUPPORT = 'support',
         FEEDBACK_TYPE_APPEAL = 'appeal',
@@ -55,7 +59,7 @@ class Page extends Model implements HasMedia
      */
     protected $casts = [
         'id' => 'integer',
-        'content' => 'array',
+        'content' => 'json',
     ];
 
     /**
@@ -115,6 +119,14 @@ class Page extends Model implements HasMedia
     }
 
     /**
+     * @return MorphMany
+     */
+    public function sliders(): MorphMany
+    {
+        return $this->morphMany(Slider::class, 'model')->where('collection_name', 'default')->orderBy('order');
+    }
+
+    /**
      * @return MorphOne
      */
     public function contentImage1(): MorphOne
@@ -131,6 +143,30 @@ class Page extends Model implements HasMedia
     }
 
     /**
+     * @return MorphOne
+     */
+    public function lineImage(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'model')->where('collection_name', self::LINE_IMAGE_MEDIA_COLLECTION);
+    }
+
+    /**
+     * @return MorphOne
+     */
+    public function lineMedia(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'model')->where('collection_name', self::LINE_MEDIA_MEDIA_COLLECTION);
+    }
+
+    /**
+     * @return MorphMany
+     */
+    public function instagram(): MorphMany
+    {
+        return $this->morphMany(Media::class, 'model')->where('collection_name', self::INSTAGRAM_MEDIA_COLLECTION);
+    }
+
+    /**
      * @return void
      */
     public function registerMediaCollections(): void
@@ -144,5 +180,19 @@ class Page extends Model implements HasMedia
         $this
             ->addMediaCollection('contentImage2')
             ->singleFile();
+        $this
+            ->addMediaCollection('lineImage')
+            ->singleFile();
+        $this
+            ->addMediaCollection('lineMedia')
+            ->singleFile();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHome(): bool
+    {
+        return $this->name === 'home';
     }
 }

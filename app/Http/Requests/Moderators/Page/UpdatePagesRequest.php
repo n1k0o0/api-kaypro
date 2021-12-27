@@ -29,6 +29,13 @@ class UpdatePagesRequest extends FormRequest
             'meta_h1' => ['nullable', 'string', 'max:128'],
             'meta_description' => ['nullable', 'string', 'max:512'],
             'meta_keywords' => ['nullable', 'string', 'max:512'],
+            'instagram.*' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+            'banner_upload' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+            'contentImage1' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+            'contentImage2' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+            'lineImage' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+            'lineMedia' => ['nullable', 'mimes:jpg,png,jpeg,svg,mp4', 'max:5120'],
+            'deleted_files' => ['array', 'nullable'],
         ];
     }
 }
