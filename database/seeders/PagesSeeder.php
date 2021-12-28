@@ -38,12 +38,16 @@ class PagesSeeder extends Seeder
                 ],
                 [
                     'name' => 'home',
-                    'content' => '{"new_products":[],"bestsellers":[],"line":{"title":""},"product":{},"popular":[],"line_2":[{"title":""},{"title":""}],"instagram":[]}'
+                    'content' => '{"new_products":[],"bestsellers":[],"line":{"title":""},"product":{},"popular":[],"line_2":[{"title":""},{"title":""}]}'
                 ],
                 [
                     'name' => 'catalog',
                     'content' => '{"bestsellers":[],"banner1":{"title":""},"banner2":{"title":""},"popular":[],"line":[{"title":""},{"title":""}]}'
-                ]
+                ],
+                [
+                    'name' => 'studio_rent',
+                    'content' => '{"description": ""}'
+                ],
             ]);
     }
 }
