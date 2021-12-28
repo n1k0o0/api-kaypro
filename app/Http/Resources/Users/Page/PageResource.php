@@ -42,6 +42,7 @@ class PageResource extends JsonResource
             'meta_keywords' => $this->meta_keywords,
             'content' => $this->content,
             'banner' => $this->when((bool)$this->banner, ImageResource::make($this->banner)),
+            'banner2' => $this->when((bool)$this->banner, ImageResource::make($this->banner2)),
             'content_image_1' => $this->when((bool)$this->contentImage1, ImageResource::make($this->contentImage1)),
             'content_image_2' => $this->when((bool)$this->contentImage2, ImageResource::make($this->contentImage2)),
             'line_image' => $this->when((bool)$this->lineImage, ImageResource::make($this->lineImage)),

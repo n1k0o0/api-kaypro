@@ -32,6 +32,7 @@ class PageController extends Controller
             PageResource::make(
                 $page->loadMissing(
                     'banner',
+                    'banner2',
                     'contentImage1',
                     'contentImage2',
                     'lineMedia',

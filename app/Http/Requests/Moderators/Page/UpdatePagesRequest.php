@@ -31,6 +31,7 @@ class UpdatePagesRequest extends FormRequest
             'meta_keywords' => ['nullable', 'string', 'max:512'],
             'instagram.*' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
             'banner_upload' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
+            'banner2_upload' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
             'contentImage1' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
             'contentImage2' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],
             'lineImage' => ['nullable', 'mimes:jpg,png,jpeg,svg', 'max:5120'],

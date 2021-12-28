@@ -22,6 +22,7 @@ class PageController extends Controller
     {
         $pages = Page::query()->with(
             'banner',
+            'banner2',
             'contentImage1',
             'contentImage2',
             'sliders',
@@ -45,10 +46,12 @@ class PageController extends Controller
         try {
             DB::beginTransaction();
             $data = $request->validated();
-            logger([44, $data]);
             $page->update($data);
             if ($request->file('banner_upload')) {
                 $page->addMediaFromRequest('banner_upload')->toMediaCollection(PAGE::BANNER_MEDIA_COLLECTION);
+            }
+            if ($request->file('banner2_upload')) {
+                $page->addMediaFromRequest('banner2_upload')->toMediaCollection(PAGE::BANNER2_MEDIA_COLLECTION);
             }
             if ($request->file('contentImage1')) {
                 $page->addMediaFromRequest('contentImage1')->toMediaCollection(PAGE::CONTENT_IMAGE_1_MEDIA_COLLECTION);

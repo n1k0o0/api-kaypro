@@ -18,6 +18,7 @@ class Page extends Model implements HasMedia
     use InteractsWithMedia;
 
     public const BANNER_MEDIA_COLLECTION = 'banner';
+    public const BANNER2_MEDIA_COLLECTION = 'banner2';
     public const CONTENT_IMAGE_1_MEDIA_COLLECTION = 'contentImage1';
     public const CONTENT_IMAGE_2_MEDIA_COLLECTION = 'contentImage2';
     public const LINE_IMAGE_MEDIA_COLLECTION = 'lineImage';
@@ -119,6 +120,14 @@ class Page extends Model implements HasMedia
     }
 
     /**
+     * @return MorphOne
+     */
+    public function banner2(): MorphOne
+    {
+        return $this->morphOne(Media::class, 'model')->where('collection_name', self::BANNER2_MEDIA_COLLECTION);
+    }
+
+    /**
      * @return MorphMany
      */
     public function sliders(): MorphMany
@@ -173,6 +182,9 @@ class Page extends Model implements HasMedia
     {
         $this
             ->addMediaCollection('banner')
+            ->singleFile();
+        $this
+            ->addMediaCollection('banner2')
             ->singleFile();
         $this
             ->addMediaCollection('contentImage1')
