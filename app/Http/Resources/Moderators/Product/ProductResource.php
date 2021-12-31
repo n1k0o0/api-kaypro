@@ -6,6 +6,7 @@ use App\Http\Resources\Moderators\ImageResource;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Date;
 use JsonSerializable;
 
 /**
@@ -35,6 +36,7 @@ use JsonSerializable;
  * @property string country,
  * @property string status,
  * @property string dimension,
+ * @property Date|null updated_at,
  **/
 class ProductResource extends JsonResource
 {
@@ -70,6 +72,7 @@ class ProductResource extends JsonResource
             'meta_keywords' => $this->meta_keywords,
             'meta_slug' => $this->meta_slug,
             'meta_image' => $this->meta_image,
+            'updated_at' => $this->updated_at,
             'logo' => ImageResource::collection($this->whenLoaded('logo')),
             'video' => ImageResource::make($this->whenLoaded('video')),
         ];

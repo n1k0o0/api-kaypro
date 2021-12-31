@@ -38,7 +38,8 @@ class PageController extends Controller
                     'lineMedia',
                     'lineImage',
                     'instagram',
-                    'sliders'
+                    'sliders',
+                    'slider_line',
                 )
             )
         );

@@ -30,6 +30,7 @@ class ProductCategoryController extends Controller
         $limit = data_get($data, 'limit');
         $categories = ProductCategory::query()
             ->with('logo', 'parent')
+            ->withCount('subcategories', 'products')
             ->when(isset($data['title']), fn(Builder $q) => $q->where('title', 'like', '%' . $data['title'] . '%'))
             ->when(
                 isset($data['sort']),

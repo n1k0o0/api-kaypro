@@ -32,6 +32,10 @@ class ProductController extends Controller
             ->with('logo')
             ->when(isset($data['name']), fn(Builder $q) => $q->where('name', 'like', '%' . $data['name'] . '%'))
             ->when(
+                isset($data['vendor_code']),
+                fn(Builder $q) => $q->where('vendor_code', 'like', '%' . $data['vendor_code'] . '%')
+            )
+            ->when(
                 isset($data['sort']),
                 fn(Builder $query) => $query->orderBy($data['sort'], $data['sort_type'])
             );

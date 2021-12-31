@@ -26,10 +26,15 @@ class CreateSlideRequest extends FormRequest
         return [
             'model_type' => ['required', 'string'],
             'model_id' => ['required', 'integer'],
+            'collection_name' => ['nullable', 'string', 'max:128'],
             'title' => ['nullable', 'string', 'max:255'],
+            'title_color' => ['nullable', 'string', 'max:10'],
             'subtitle' => ['nullable', 'string', 'max:255'],
+            'subtitle_color' => ['nullable', 'string', 'max:10'],
             'link' => ['nullable', 'string', 'max:255'],
+            'button' => ['nullable', 'boolean'],
             'button_text' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:1024'],
             'image_upload' => ['required', 'mimes:jpg,png,jpeg,svg', 'max:5096'],
         ];
     }

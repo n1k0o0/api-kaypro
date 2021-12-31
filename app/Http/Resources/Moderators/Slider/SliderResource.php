@@ -11,9 +11,13 @@ use JsonSerializable;
 /**
  * @property int id
  * @property string title
+ * @property string description
+ * @property string title_color
  * @property string subtitle
+ * @property string subtitle_color
  * @property string link
  * @property string button_text
+ * @property bool button
  * @property int order
  */
 class SliderResource extends JsonResource
@@ -29,11 +33,16 @@ class SliderResource extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
+            'description' => $this->description,
+            'title_color' => $this->title_color,
             'subtitle' => $this->subtitle,
+            'subtitle_color' => $this->subtitle_color,
             'link' => $this->link,
+            'button' => $this->button,
             'button_text' => $this->button_text,
             'order' => $this->order,
-            'image' => ImageResource::make($this->whenLoaded('image'))
+            'image' => ImageResource::make($this->whenLoaded('image')),
+            'media' => ImageResource::make($this->whenLoaded('mediaFile'))
         ];
     }
 }

@@ -72,7 +72,7 @@ class Page extends Model implements HasMedia
     {
         static::saving(static function ($model) {
             if ($model->name === 'help' || $model->name === 'document') {
-                $cont = (array)$model->content;
+                $cont = (array)$model->content['context'];
                 foreach ($cont as $key => $value) {
                     if (empty($value['title'])) {
                         throw ValidationException::withMessages(
@@ -81,7 +81,9 @@ class Page extends Model implements HasMedia
                     }
                     $cont[$key]['meta_slug'] = Str::slug($value['title']);
                 }
-                $model->content = json_encode($cont, JSON_THROW_ON_ERROR);
+                $newModel = $model->content;
+                $newModel['context'] = $cont;
+                $model->content = json_encode($newModel, JSON_THROW_ON_ERROR);
             }
         });
     }
@@ -133,6 +135,14 @@ class Page extends Model implements HasMedia
     public function sliders(): MorphMany
     {
         return $this->morphMany(Slider::class, 'model')->where('collection_name', 'default')->orderBy('order');
+    }
+
+    /**
+     * @return MorphMany
+     */
+    public function slider_line(): MorphMany
+    {
+        return $this->morphMany(Slider::class, 'model')->where('collection_name', 'line')->orderBy('order');
     }
 
     /**

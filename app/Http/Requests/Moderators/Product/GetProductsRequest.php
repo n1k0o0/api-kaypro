@@ -28,6 +28,7 @@ class GetProductsRequest extends FormRequest
             'page' => ['nullable', 'integer'],
             'limit' => ['nullable', 'integer'],
             'name' => ['nullable', 'string', 'max:512'],
+            'vendor_code' => ['nullable', 'string', 'max:512'],
             'sort' => ['nullable', 'string', 'max:50'],
             'sort_type' => ['nullable', 'string', Rule::in(['asc', 'desc'])],
         ];

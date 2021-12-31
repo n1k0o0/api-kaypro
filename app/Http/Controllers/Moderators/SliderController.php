@@ -33,8 +33,11 @@ class SliderController extends Controller
             $slide = Slider::query()
                 ->create($data);
             $slide->addMediaFromRequest('image_upload')->toMediaCollection();
+            if ($request->hasFile('media_upload')) {
+                $slide->addMediaFromRequest('media_upload')->toMediaCollection('media_file');
+            }
             DB::commit();
-            return $this->respondSuccess(SliderResource::make($slide->loadMissing('image')));
+            return $this->respondSuccess(SliderResource::make($slide->loadMissing('image', 'mediaFile')));
         } catch (Exception $e) {
             DB::rollBack();
             throw new $e();

@@ -19,7 +19,6 @@ class ProductFactory extends Factory
         Product::all()->each->delete();
         $name = $this->faker->unique()->text(20);
         $categories = ProductCategory::query()->pluck('title')->toArray();
-        logger([777, $name, $categories]);
         return [
             'id_1c' => $this->faker->unique()->text(20),
             'barcode' => $this->faker->unique()->text(20),
@@ -30,6 +29,7 @@ class ProductFactory extends Factory
             'category' => $this->faker->randomElement($categories),
             'volume' => $this->faker->randomNumber(3),
             'weight' => $this->faker->randomNumber(3),
+            'price' => $this->faker->randomNumber(4),
             'short_description' => $this->faker->realText(15),
             'full_description' => $this->faker->text(150),
             'composition' => $this->faker->text(150),

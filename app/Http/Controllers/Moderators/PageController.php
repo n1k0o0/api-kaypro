@@ -26,6 +26,7 @@ class PageController extends Controller
             'contentImage1',
             'contentImage2',
             'sliders',
+            'slider_line',
             'lineImage',
             'lineMedia',
             'instagram',

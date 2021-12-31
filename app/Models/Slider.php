@@ -21,7 +21,7 @@ class Slider extends Model implements HasMedia
      *
      * @var array
      */
-    protected $with = ['image'];
+    protected $with = ['image', 'mediaFile'];
 
     /**
      * The attributes that are mass assignable.
@@ -31,10 +31,14 @@ class Slider extends Model implements HasMedia
     protected $fillable = [
         'model_type',
         'model_id',
+        'description',
         'collection_name',
         'title',
+        'title_color',
         'subtitle',
+        'subtitle_color',
         'link',
+        'button',
         'button_text',
         'order',
     ];
@@ -46,6 +50,7 @@ class Slider extends Model implements HasMedia
     protected $casts = [
         'id' => 'integer',
         'model_id' => 'integer',
+        'button' => 'boolean',
     ];
 
     /**
@@ -54,6 +59,14 @@ class Slider extends Model implements HasMedia
     public function image(): morphOne
     {
         return $this->morphOne(Media::class, 'model')->where('collection_name', 'default');
+    }
+
+    /**
+     * @return MorphOne
+     */
+    public function mediaFile(): morphOne
+    {
+        return $this->morphOne(Media::class, 'model')->where('collection_name', 'media_file');
     }
 
 

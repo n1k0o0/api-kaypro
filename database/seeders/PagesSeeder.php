@@ -14,6 +14,9 @@ class PagesSeeder extends Seeder
      */
     public function run(): void
     {
+        Page::query()->where('name', '=', 'help')->orWhere('name', '=', 'document')->update([
+            'content' => '{"context":[]}'
+        ]);
         Page::query()
             ->insertOrIgnore([
                 [
@@ -26,11 +29,11 @@ class PagesSeeder extends Seeder
                 ],
                 [
                     'name' => 'help',
-                    'content' => '{}'
+                    'content' => '{"context":[]}'
                 ],
                 [
                     'name' => 'document',
-                    'content' => '{}'
+                    'content' => '{"context":[]}'
                 ],
                 [
                     'name' => 'cooperation',

@@ -35,11 +35,12 @@ class Moderator extends Authenticatable
     use HasApiTokens;
 
     public const TYPE_ADMIN = 'admin',
-            TYPE_MODERATOR = 'moderator';
+        TYPE_SUPER_ADMIN = 'super_admin',
+        TYPE_MODERATOR = 'moderator';
 
     public const TYPES = [
-            self::TYPE_ADMIN,
-            self::TYPE_MODERATOR
+        self::TYPE_ADMIN,
+        self::TYPE_MODERATOR
     ];
 
     /**
@@ -48,13 +49,13 @@ class Moderator extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-            'first_name',
-            'last_name',
-            'patronymic',
-            'email',
-            'phone',
-            'type',
-            'password',
+        'first_name',
+        'last_name',
+        'patronymic',
+        'email',
+        'phone',
+        'type',
+        'password',
     ];
 
     /**
@@ -63,8 +64,8 @@ class Moderator extends Authenticatable
      * @var array
      */
     protected $hidden = [
-            'password',
-            'remember_token',
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -73,8 +74,16 @@ class Moderator extends Authenticatable
      * @var array
      */
     protected $casts = [
-            'id' => 'integer',
+        'id' => 'integer',
     ];
+
+    /**
+     * @return bool
+     */
+    public function isModerator(): bool
+    {
+        return $this->type === self::TYPE_MODERATOR;
+    }
 
     /**
      * @return bool
@@ -82,6 +91,14 @@ class Moderator extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->type === self::TYPE_ADMIN;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSuperAdmin(): bool
+    {
+        return $this->type === self::TYPE_SUPER_ADMIN;
     }
 
     /**

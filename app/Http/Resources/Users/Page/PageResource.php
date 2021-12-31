@@ -49,6 +49,7 @@ class PageResource extends JsonResource
             'line_media' => $this->when((bool)$this->lineMedia, ImageResource::make($this->lineMedia)),
             'instagram' => $this->when((bool)$this->lineMedia, ImageResource::collection($this->instagram)),
             'slider' => SliderResource::collection($this->whenLoaded('sliders')),
+            'slider_line' => SliderResource::collection($this->whenLoaded('slider_line')),
         ];
     }
 }

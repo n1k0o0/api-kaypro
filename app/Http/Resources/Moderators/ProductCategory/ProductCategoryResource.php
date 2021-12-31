@@ -6,10 +6,13 @@ use App\Http\Resources\Moderators\ImageResource;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Carbon;
 use JsonSerializable;
 
 /**
  * @property int id
+ * @property int products_count
+ * @property int subcategories_count
  * @property string title
  * @property string subtitle
  * @property string meta_title
@@ -19,6 +22,7 @@ use JsonSerializable;
  * @property string meta_image
  * @property bool mobile_visibility
  * @property int order
+ * @property Carbon|null updated_at
  **/
 class ProductCategoryResource extends JsonResource
 {
@@ -46,7 +50,10 @@ class ProductCategoryResource extends JsonResource
             'banner_mobile' => ImageResource::make($this->whenLoaded('bannerMobile')),
             'slider' => ImageResource::collection($this->whenLoaded('slider')),
             'parent' => self::make($this->whenLoaded('parent')),
+            'products_count' => $this->products_count,
+            'subcategories_count' => $this->subcategories_count,
             'mobile_visibility' => (int)$this->mobile_visibility,
+            'updated_at' => $this->updated_at,
         ];
     }
 }
