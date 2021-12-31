@@ -60,7 +60,7 @@ class Page extends Model implements HasMedia
      */
     protected $casts = [
         'id' => 'integer',
-        'content' => 'json',
+        'content' => 'object',
     ];
 
     /**
@@ -72,17 +72,17 @@ class Page extends Model implements HasMedia
     {
         static::saving(static function ($model) {
             if ($model->name === 'help' || $model->name === 'document') {
-                $cont = (array)$model->content['context'];
-                foreach ($cont as $key => $value) {
-                    if (empty($value['title'])) {
+                $cont = $model->content->context;
+                foreach ($cont as $value) {
+                    if (empty($value->title)) {
                         throw ValidationException::withMessages(
                             ['title' => 'The Section title is required']
                         );
                     }
-                    $cont[$key]['meta_slug'] = Str::slug($value['title']);
+                    $value->meta_slug = Str::slug($value->title);
                 }
                 $newModel = $model->content;
-                $newModel['context'] = $cont;
+                $newModel->context = $cont;
                 $model->content = json_encode($newModel, JSON_THROW_ON_ERROR);
             }
         });
